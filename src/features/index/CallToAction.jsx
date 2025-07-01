@@ -1,30 +1,34 @@
+import { Link } from "react-router-dom";
+import { useAuthContext } from "../../contexts/AuthContext";
 import Button from "../../ui/Button";
 
 function CallToAction() {
+  const { isAuthenticated, userRole } = useAuthContext();
+
+  const lms = isAuthenticated
+    ? userRole === "admin"
+      ? "lms/admin"
+      : "/lms/student"
+    : "/lms/signin";
+
   return (
     <section
       data-aos="fade-up"
-      className="relative overflow-hidden py-14 mt-6 xl:mt-10 bg-[url('/green-bg.svg')] bg-no-repeat bg-cover bg-center bg-green-700 bg-blend-multiply text-white"
+      className="relative mt-6 overflow-hidden bg-green-700 bg-[url('/green-bg.svg')] bg-cover bg-center bg-no-repeat py-14 text-white bg-blend-multiply xl:mt-10"
     >
-      {/* Blurred Texture SVG Overlay */}
-      {/* <div className="absolute inset-0 z-0 pointer-events-none">
-        <img
-          src="/green-bg.svg"
-          alt=""
-          className="w-full h-full object-cover opacity-40 mix-blend- "
-        />
-      </div> */}
-      <div className="max-w-4xl mx-auto px-4 text-center animate-fade-in">
-        <h2 className="!text-white dark:text-gray-800 mb-4 leading-7">
+      <div className="animate-fade-in mx-auto max-w-4xl px-4 text-center">
+        <h2 className="mb-4 leading-7 !text-white dark:text-gray-800">
           Ready to Start Learning?
         </h2>
-        <p className="text-gray-300 mb-8 text-sm max-w-2xl mx-auto">
+        <p className="mx-auto mb-8 max-w-2xl text-sm text-gray-300">
           Join hundreds of students developing successful product careers
         </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Button size={"medium"} variation={"primary"}>
-            Create Account
-          </Button>
+        <div className="flex flex-col justify-center gap-4 sm:flex-row">
+          <Link to={lms}>
+            <Button size={"medium"} variation={"primary"}>
+              Create Account
+            </Button>
+          </Link>
           <Button size={"medium"} variation={"secondary"}>
             Explore Courses
           </Button>
