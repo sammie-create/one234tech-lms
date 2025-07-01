@@ -15,7 +15,7 @@ function Navbar() {
   return (
     <nav
       data-aos="fade-in"
-      className="sticky top-0 z-50 bg-white p-2 shadow-sm md:px-4 lg:p-3 xl:px-8"
+      className="sticky top-0 z-50 bg-white p-2.5 shadow-sm md:px-4 md:py-3.5 lg:p-3 xl:px-8"
     >
       <div className="flex items-center justify-between">
         <Logo />

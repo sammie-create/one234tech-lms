@@ -35,7 +35,7 @@ function HeroSection() {
             learning, and the support to keep you moving forward.
           </p>
 
-          <div className="flex justify-center gap-4 md:justify-start">
+          <div className="flex justify-center gap-4 md:justify-start md:gap-5">
             <Link to={lms}>
               <Button size={"medium"} variation={"primary"}>
                 Start Learning

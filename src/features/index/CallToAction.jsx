@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuthContext } from "../../contexts/AuthContext";
 import Button from "../../ui/Button";
 
@@ -24,21 +24,26 @@ function CallToAction() {
           Join hundreds of students developing successful product careers
         </p>
         <div className="flex flex-col justify-center gap-4 sm:flex-row">
-          <Link to={lms}>
+          {/* <Link to={lms}>
             <Button size={"medium"} variation={"primary"}>
               Create Account
             </Button>
           </Link>
           <Button size={"medium"} variation={"secondary"}>
             Explore Courses
-          </Button>
+          </Button> */}
 
-          {/* <button className="btn px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white text-[12px] hover:from-green-600 hover:to-emerald-700 transition-all duration-300">
-            Create Account
-          </button>
-          <button className="btn px-6 py-3 border border-green-500 text-green-400 text-[12px] hover:bg-green-50 hover:border-green-50 transition-all duration-400">
+          <Link to={lms}>
+            <button
+              type="button"
+              className="btn border border-green-500 bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-3 text-[12px] text-white transition-all duration-300 hover:from-green-600 hover:to-emerald-700"
+            >
+              Create Account
+            </button>
+          </Link>
+          <button className="btn border border-green-500 px-6 py-3 text-[12px] text-green-400 transition-all duration-400 hover:border-green-50 hover:bg-green-50">
             Explore Courses
-          </button> */}
+          </button>
         </div>
       </div>
     </section>

@@ -13,11 +13,11 @@
   }
 
   .btn-small {
-    @apply p-[0.6rem] md:text-[12px] md:py-3 md:px-6 lg:px-10 lg:py-4 lg:text-[14px];
+    @apply p-[0.6rem] md:px-6 md:py-3 md:text-[12px] lg:px-10 lg:py-4 lg:text-[14px];
   }
 
   .btn-medium {
-    @apply px-[0.85rem] py-[0.7rem] md:text-[12px] md:px-[1rem] lg:text-base lg:px-[1.5rem] lg:py-[1rem];
+    @apply px-[0.85rem] py-[0.7rem] md:px-[1rem] md:text-[12px] lg:px-[1.5rem] lg:py-[1rem] lg:text-base;
   }
   /* 
   .btn-large {
@@ -30,7 +30,7 @@
     /* background-image: linear-gradient(to right, #22c55e, #059669); */
     background-color: #16a249;
     color: var(--color-white);
-    /* border: 1px solid #16a249; */
+    border: 1px solid #16a249;
 
     &:hover {
       @media (hover: hover) {
@@ -158,15 +158,15 @@ h1 {
 }
 
 h2 {
-  @apply font-bold text-[20px] text-gray-800 md:text-[24px];
+  @apply text-[20px] font-bold text-gray-800 md:text-[24px];
 }
 
 h3 {
-  @apply font-semibold text-[14px] text-gray-700 md:text-[18px];
+  @apply text-[14px] font-semibold text-gray-700 md:text-[18px];
 }
 
 a {
-  @apply text-gray-500 cursor-pointer transition-all duration-400;
+  @apply cursor-pointer text-gray-500 transition-all duration-400;
 
   &.active {
     @apply bg-green-50 font-bold;
