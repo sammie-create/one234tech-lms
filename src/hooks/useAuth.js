@@ -18,6 +18,7 @@ function useAuth() {
         email,
         password,
         options: {
+          emailRedirectTo: `https://learn-one234tech.vercel.app/lms/email-confirmed`,
           data: {
             name,
             role: "student",
@@ -31,10 +32,10 @@ function useAuth() {
         return;
       }
 
-      toast.success("Account created! Please sign in.");
+      toast.success("Check your email to confirm your account");
       resetForm();
       console.log(data);
-      setTimeout(() => navigate("/lms"), 1000);
+      // setTimeout(() => navigate("/lms"), 1000);
     } catch (err) {
       //   setError("An error occured" + err.message);
       toast.error("Signup error" + err.message);

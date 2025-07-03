@@ -14,6 +14,7 @@ import UpdatePassword from "../features/lms/UpdatePassword";
 import EmailSent from "../features/lms/EmailSent";
 import { LMSProvider } from "../contexts/LMSContext";
 import SessionExpired from "../features/lms/SessionExpired";
+import EmailConfirmed from "../features/lms/EmailConfirmed";
 
 function LMS() {
   return (
@@ -26,6 +27,7 @@ function LMS() {
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="update-password" element={<UpdatePassword />} />
         <Route path="email-sent" element={<EmailSent />} />
+        <Route path="email-confirmed" element={<EmailConfirmed />} />
 
         <Route element={<ProtectedRoutes />}>
           <Route path="student" element={<StudentLMSLayout />}>
