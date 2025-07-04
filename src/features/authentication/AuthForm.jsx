@@ -41,6 +41,7 @@ function AuthForm({ title, subtitle, role, variant, onSubmit }) {
           })}
           noValidate
         >
+          {/* Sign up, Sign in (Student & Admin) form */}
           {variant === "signup" && (
             <div className="mb-4">
               <div className="relative">

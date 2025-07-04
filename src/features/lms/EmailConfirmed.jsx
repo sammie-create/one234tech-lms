@@ -5,6 +5,8 @@ import toast from "react-hot-toast";
 function EmailConfirmed() {
   const navigate = useNavigate();
 
+  // Show success message and redirect after email confirmation
+  // This effect runs when the component mounts, indicating the email has been confirmed
   useEffect(() => {
     toast.success("Email confirmed! You're now signed in.");
     const timer = setTimeout(() => navigate("/lms/student"), 2000);

@@ -12,10 +12,12 @@ function ForgotPassword() {
   const navigate = useNavigate();
   console.log(window.location.origin);
 
+  // Function to handle password reset
+  // This function sends a password reset link to the user's email
   async function onSubmit({ email }) {
     const toastId = toast.loading("Sending reset link");
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `https://learn-one234tech.vercel.app/lms/update-password`,
+      redirectTo: "https://learn-one234tech.vercel.app/lms/update-password",
     });
 
     if (error) {

@@ -10,6 +10,8 @@ function useAuth() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
+  // Sign up function
+  // This function handles user registration
   async function handleSignUp({ email, password, name }, resetForm) {
     setIsLoading(true);
 
@@ -18,7 +20,8 @@ function useAuth() {
         email,
         password,
         options: {
-          emailRedirectTo: `https://learn-one234tech.vercel.app/lms/email-confirmed`,
+          emailRedirectTo:
+            "https://learn-one234tech.vercel.app/lms/email-confirmed",
           data: {
             name,
             role: "student",
@@ -45,6 +48,8 @@ function useAuth() {
     // console.log(data.email);
   }
 
+  // Sign in function
+  // This function handles user login
   async function handleSignIn({ email, password }) {
     setIsLoading(true);
     try {
@@ -71,6 +76,7 @@ function useAuth() {
     }
   }
 
+  // Sign out function
   function handleSignOut() {
     signOut(navigate);
   }
