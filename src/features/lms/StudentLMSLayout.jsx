@@ -15,11 +15,11 @@ function StudentLMSLayout() {
       ) : (
         <div
           data-aos="fade-in"
-          className="min-h-screen md:grid md:grid-cols-[14rem_1fr] md:grid-rows-[auto_1fr_auto]"
+          className="min-h-screen md:grid md:grid-cols-[14rem_1fr] md:grid-rows-[auto_1fr_auto] lg:grid-cols-[16rem_1fr] xl:grid-cols-[20rem_1fr]"
         >
           <LMSNavbar />
           <SideBar />
-          <main className="col-start-2 row-start-2 p-4 md:p-7">
+          <main className="relative col-start-2 row-start-2 min-h-screen p-4 md:p-7 lg:px-10 lg:py-10">
             <Outlet />
           </main>
           <LMSFooter />

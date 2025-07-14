@@ -1,87 +1,108 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  FiHome,
-  FiBook,
-  FiClipboard,
-  FiAward,
-  FiSettings,
-  FiUser,
-  FiLogOut,
-  FiMenu,
-} from "react-icons/fi";
-import {
-  RiMenu2Fill,
-  RiCloseFill,
-  RiCloseLargeFill,
-  RiInformationFill,
-  RiAlertFill,
-} from "react-icons/ri";
-import LMSNavbar from "./LMSNavbar";
-import SideBar from "./SideBar";
-import { useLMSContext } from "../../contexts/LMSContext";
-// import { supabase } from "../supabaseClient";
+import { RiInformationFill, RiAlertFill } from "react-icons/ri";
+import { GrTarget } from "react-icons/gr";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { useUserProfile } from "../../hooks/useUserProfile";
+import { useStudentStats } from "../../hooks/useStudentStats";
+import StudentDashboardProgressCard from "./StudentDashboardProgressCard";
+import Button from "../../ui/Button";
+import Loader from "../../ui/Loader";
 
 function StudentDashboard() {
-  const [courses, _] = useState([]);
-  const { student } = useLMSContext();
+  const { user } = useAuthContext();
+  const { studentProfile, profileLoading } = useUserProfile(user?.id);
+  const { overallProgress, courseProgresses, overallLoading, coursesLoading } =
+    useStudentStats();
 
-  const studentName = student?.name.split(" ")[0] || "Student";
-  console.log(studentName);
+  const loading = overallLoading || coursesLoading || profileLoading;
+
+  const studentName = studentProfile?.name.split(" ")[0] || "Student";
+
+  // console.log(studentName);
+  // console.log("Overall Progress:", overallProgress);
+  // console.log("Course Progresses:", courseProgresses);
+
+  if (loading) return <Loader />;
 
   return (
     <div data-aos="fade-in" className="flex flex-col gap-6">
       {/* Welcome Banner */}
-      <div className="bg-emerald-900 p-6 rounded-2xl shadow-lg text-white">
-        <h1 className="text-2xl font-semibold ">Welcome, {studentName}</h1>
-        <p className="text-sm text-emerald-100 mt-1">
-          Here’s your learning progress at a glance.
+      <div className="rounded-2xl bg-gradient-to-r from-green-600 to-emerald-600 p-6 text-white shadow-lg">
+        <h1 className="text-2xl font-semibold">Welcome, {studentName}</h1>
+        <p className="mt-1 text-sm text-emerald-100">
+          Continue your learning journey and achieve your goals!
         </p>
       </div>
 
       {/* Progress Cards */}
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-6">
-        <div className="bg-gradient-to-br from-blue-600 to-blue-900 text-white p-5 rounded-2xl shadow-lg">
-          <h4 className="text-sm">Courses Completed</h4>
-          <p className="text-2xl font-bold mt-1">
-            {courses.filter(c => c.progress >= 100).length}
-          </p>
-        </div>
-        <div className="bg-gradient-to-br from-amber-500 to-yellow-600 p-5 rounded-2xl shadow-lg text-yellow-900">
-          <h4 className="text-sm">Assignments Submitted</h4>
-          <p className="text-2xl font-bold mt-1">12</p>
-        </div>
-        <div className="bg-gradient-to-br from-lime-700 to-emerald-800 p-5 rounded-2xl shadow-lg text-white">
-          <h4 className="text-sm">Certificates Earned</h4>
-          <p className="text-2xl font-bold mt-1">2</p>
-        </div>
+      <div className="grid grid-cols-1 gap-6 rounded-2xl bg-white p-6 shadow-sm md:grid-cols-3">
+        <h2 className="col-span-1 !text-base md:col-span-3 md:!text-lg xl:!text-xl">
+          Learning Progress
+        </h2>
+        {loading ? (
+          <div className="relative col-span-1 md:col-span-3">
+            <Loader />
+          </div>
+        ) : (
+          <>
+            <StudentDashboardProgressCard
+              value={overallProgress}
+              color={"#2563EB"}
+              label={"Overall Progress"}
+            />
+            <StudentDashboardProgressCard
+              value={20}
+              color={"#fe9a00"}
+              label={"Assignments"}
+            />
+            <StudentDashboardProgressCard
+              value={50}
+              color={"#59a57a"}
+              label={"Certificates"}
+            />
+          </>
+        )}
       </div>
 
       {/* My Courses */}
-      <section className="bg-white space-y-4 border border-gray-200 p-4 rounded-2xl shadow-sm ">
-        <h2>My Courses</h2>
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          {courses.length < 0 ? (
-            courses.map((course, i) => (
+      <section className="space-y-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+        <h2 className="!text-base md:!text-lg xl:!text-xl">My Courses</h2>
+        <div className="grid grid-cols-1 gap-4">
+          {courseProgresses?.length > 0 ? (
+            courseProgresses?.map((course) => (
               <div
-                key={i}
-                className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
+                key={course.course_id}
+                className="grid grid-cols-[2.5rem_auto] grid-rows-1 gap-3 rounded-lg bg-gray-100 px-4 py-3 md:grid-cols-[2.5rem_1fr_auto] md:gap-4 md:py-4 lg:grid-cols-[3rem_1fr_auto]"
               >
-                <h3 className="font-medium text-gray-800 mb-2">
-                  {course.title}
-                </h3>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-500"
-                    style={{ width: `${course.progress}%` }}
-                  ></div>
+                <div
+                  className={`flex h-10 w-10 items-center justify-center self-center rounded-sm ${course.title === "Product Marketing" ? "bg-blue-600" : course.title === "Product Management" ? "bg-emerald-600" : "bg-amber-500"} text-white lg:h-12 lg:w-12`}
+                >
+                  <GrTarget className="h-6 w-6 lg:h-8 lg:w-8" />
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  {course.progress}% completed
+
+                <div>
+                  <h3 className="mb-1 font-medium text-gray-800">
+                    {course.title}
+                  </h3>
+                  <p className="mb-1 text-xs">
+                    &bull; {course.totalLessons} lessons
+                  </p>
+                  <div className="h-2 w-full rounded-full bg-gray-200">
+                    <div
+                      className={`h-2 rounded-full ${course.title === "Product Marketing" ? "bg-blue-600" : course.title === "Product Management" ? "bg-emerald-600" : "bg-amber-500"} transition-all duration-500`}
+                      style={{ width: `${course.progress}%` }}
+                    ></div>
+                  </div>
                 </div>
-                <button className="mt-3 text-sm text-blue-600 hover:underline">
+
+                <Button
+                  size={"medium"}
+                  variation={"primary"}
+                  style={
+                    "text-xs col-span-2 md:text-sm md:h-11 md:w-28 xl:w-34 md:self-center md:col-span-1"
+                  }
+                >
                   Continue
-                </button>
+                </Button>
               </div>
             ))
           ) : (
@@ -91,22 +112,22 @@ function StudentDashboard() {
       </section>
 
       {/* Notifications */}
-      <section className="bg-white space-y-4 border border-gray-200 p-4 rounded-2xl shadow-sm ">
-        <h2>Notifications</h2>
+      <section className="space-y-4 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+        <h2 className="!text-base md:!text-lg xl:!text-xl">Notifications</h2>
         <ul className="space-y-3">
-          <li className="bg-emerald-50 p-4 rounded-lg flex items-center gap-2">
+          <li className="flex items-center gap-2 rounded-lg bg-emerald-50 p-4">
             <RiAlertFill className="text-base text-yellow-500" />
             <div>
-              <p className="text-[12px] text-gray-700 font-semibold">
+              <p className="text-[12px] font-semibold text-gray-700">
                 Assignment due soon
               </p>
               <span>Product Research assignment due in 2 days </span>
             </div>
           </li>
-          <li className="bg-lime-50 p-4 rounded-lg flex gap-2 items-center">
+          <li className="flex items-center gap-2 rounded-lg bg-lime-50 p-4">
             <RiInformationFill className="text-base text-blue-700" />
             <div>
-              <p className="text-[12px] text-gray-700 font-semibold">
+              <p className="text-[12px] font-semibold text-gray-700">
                 New session available
               </p>
               <span>User Research II now live</span>
@@ -122,249 +143,3 @@ function StudentDashboard() {
 }
 
 export default StudentDashboard;
-
-// import React, { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import {
-//   FiHome,
-//   FiBook,
-//   FiClipboard,
-//   FiAward,
-//   FiSettings,
-//   FiUser,
-//   FiLogOut,
-//   FiMenu,
-// } from "react-icons/fi";
-// import {
-//   RiMenu2Fill,
-//   RiCloseFill,
-//   RiCloseLargeFill,
-//   RiInformationFill,
-//   RiAlertFill,
-// } from "react-icons/ri";
-// import LMSNavbar from "./LMSNavbar";
-// import SideBar from "./SideBar";
-
-// function StudentDashboard() {
-//   const [studentName, setStudentName] = useState("Student");
-//   const [courses, setCourses] = useState([]);
-//   const [dropdownOpen, setDropdownOpen] = useState(false);
-//   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-//   return (
-//     <div className="flex flex-col gap-6">
-//       {/* Welcome Banner */}
-//       <div className="bg-emerald-100 p-6 rounded-2xl shadow-sm border border-emerald-200">
-//         <h1 className="text-2xl font-semibold text-emerald-900">
-//           Welcome, {studentName}!
-//         </h1>
-//         <p className="text-sm text-emerald-700 mt-1">
-//           Here’s your learning progress at a glance.
-//         </p>
-//       </div>
-
-//       {/* Progress Cards */}
-//       <div className="grid md:grid-cols-3 grid-cols-1 gap-6">
-//         <div className="bg-gradient-to-br from-blue-50 to-white text-blue-700 p-5 rounded-2xl shadow border border-blue-200">
-//           <h4 className="text-sm">Courses Completed</h4>
-//           <p className="text-2xl font-bold mt-1">
-//             {courses.filter(c => c.progress >= 100).length}
-//           </p>
-//         </div>
-//         <div className="bg-gradient-to-br from-yellow-50 to-white p-5 rounded-2xl shadow border border-yellow-200 text-yellow-700">
-//           <h4 className="text-sm">Assignments Submitted</h4>
-//           <p className="text-2xl font-bold mt-1">12</p>
-//         </div>
-//         <div className="bg-gradient-to-br from-green-50 to-white p-5 rounded-2xl shadow border border-green-200 text-green-700">
-//           <h4 className="text-sm">Certificates Earned</h4>
-//           <p className="text-2xl font-bold mt-1">2</p>
-//         </div>
-//       </div>
-
-//       {/* My Courses */}
-//       <section className="bg-white space-y-4 border border-gray-200 p-6 rounded-2xl shadow">
-//         <h2 className="text-lg font-semibold text-gray-800">My Courses</h2>
-//         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-//           {courses.length > 0 ? (
-//             courses.map((course, i) => (
-//               <div
-//                 key={i}
-//                 className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm space-y-2"
-//               >
-//                 <h3 className="font-medium text-gray-800">{course.title}</h3>
-//                 <div className="w-full bg-gray-200 rounded-full h-2">
-//                   <div
-//                     className="bg-emerald-600 h-2 rounded-full transition-all duration-500"
-//                     style={{ width: `${course.progress}%` }}
-//                   ></div>
-//                 </div>
-//                 <div className="text-xs text-gray-500">
-//                   {course.progress}% completed
-//                 </div>
-//                 <button className="mt-2 text-sm text-emerald-600 hover:underline">
-//                   Continue
-//                 </button>
-//               </div>
-//             ))
-//           ) : (
-//             <p className="text-sm text-gray-500">No course selected yet.</p>
-//           )}
-//         </div>
-//       </section>
-
-//       {/* Notifications */}
-//       <section className="bg-white space-y-4 border border-gray-200 p-6 rounded-2xl shadow">
-//         <h2 className="text-lg font-semibold text-gray-800">Notifications</h2>
-//         <ul className="space-y-3">
-//           <li className="bg-emerald-50 p-4 rounded-xl flex items-start gap-3">
-//             <RiAlertFill className="text-lg text-yellow-500 mt-0.5" />
-//             <div>
-//               <p className="text-sm text-gray-700 font-semibold">
-//                 Assignment due soon
-//               </p>
-//               <span className="text-xs text-gray-600">
-//                 Product Research assignment due in 2 days
-//               </span>
-//             </div>
-//           </li>
-//           <li className="bg-lime-50 p-4 rounded-xl flex gap-3 items-start">
-//             <RiInformationFill className="text-lg text-blue-700 mt-0.5" />
-//             <div>
-//               <p className="text-sm text-gray-700 font-semibold">
-//                 New session available
-//               </p>
-//               <span className="text-xs text-gray-600">
-//                 User Research II now live
-//               </span>
-//             </div>
-//           </li>
-//         </ul>
-//       </section>
-//     </div>
-//   );
-// }
-
-// export default StudentDashboard;
-
-// import React, { useEffect, useState } from "react";
-// import { Link } from "react-router-dom";
-// import {
-//   FiHome,
-//   FiBook,
-//   FiClipboard,
-//   FiAward,
-//   FiSettings,
-//   FiUser,
-//   FiLogOut,
-//   FiMenu,
-// } from "react-icons/fi";
-// import {
-//   RiMenu2Fill,
-//   RiCloseFill,
-//   RiCloseLargeFill,
-//   RiInformationFill,
-//   RiAlertFill,
-// } from "react-icons/ri";
-// import LMSNavbar from "./LMSNavbar";
-// import SideBar from "./SideBar";
-
-// function StudentDashboard() {
-//   const [studentName, setStudentName] = useState("Student");
-//   const [courses, setCourses] = useState([]);
-//   const [dropdownOpen, setDropdownOpen] = useState(false);
-//   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-//   return (
-//     <div className="flex flex-col gap-6 bg-white min-h-screen px-4 py-6 text-slate-800">
-//       {/* Welcome Banner */}
-//       <div className="bg-emerald-100 p-6 rounded-2xl shadow-sm border border-emerald-200">
-//         <h1 className="text-2xl font-semibold text-emerald-900">
-//           Welcome, {studentName}!
-//         </h1>
-//         <p className="text-sm text-emerald-700 mt-1">
-//           Here’s your learning progress at a glance.
-//         </p>
-//       </div>
-
-//       {/* Progress Cards */}
-//       <div className="grid md:grid-cols-3 grid-cols-1 gap-6">
-//         <div className="bg-blue-100 text-blue-900 p-5 rounded-2xl shadow-lg border border-blue-200">
-//           <h4 className="text-sm">Courses Completed</h4>
-//           <p className="text-2xl font-bold mt-1">
-//             {courses.filter(c => c.progress >= 100).length}
-//           </p>
-//         </div>
-//         <div className="bg-yellow-100 p-5 rounded-2xl shadow-lg border border-yellow-200 text-yellow-800">
-//           <h4 className="text-sm">Assignments Submitted</h4>
-//           <p className="text-2xl font-bold mt-1">12</p>
-//         </div>
-//         <div className="bg-green-100 p-5 rounded-2xl shadow-lg border border-green-200 text-green-900">
-//           <h4 className="text-sm">Certificates Earned</h4>
-//           <p className="text-2xl font-bold mt-1">2</p>
-//         </div>
-//       </div>
-
-//       {/* My Courses */}
-//       <section className="bg-white space-y-4 border border-gray-200 p-6 rounded-2xl shadow">
-//         <h2 className="text-lg font-semibold text-slate-800">My Courses</h2>
-//         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-//           {courses.length > 0 ? (
-//             courses.map((course, i) => (
-//               <div
-//                 key={i}
-//                 className="bg-gray-50 border border-gray-200 rounded-xl p-5 shadow-sm space-y-2"
-//               >
-//                 <h3 className="font-medium text-slate-800">{course.title}</h3>
-//                 <div className="w-full bg-slate-200 rounded-full h-2">
-//                   <div
-//                     className="bg-emerald-500 h-2 rounded-full transition-all duration-500"
-//                     style={{ width: `${course.progress}%` }}
-//                   ></div>
-//                 </div>
-//                 <div className="text-xs text-slate-500">
-//                   {course.progress}% completed
-//                 </div>
-//                 <button className="mt-2 text-sm text-emerald-600 hover:underline">
-//                   Continue
-//                 </button>
-//               </div>
-//             ))
-//           ) : (
-//             <p className="text-sm text-slate-500">No course selected yet.</p>
-//           )}
-//         </div>
-//       </section>
-
-//       {/* Notifications */}
-//       <section className="bg-white space-y-4 border border-gray-200 p-6 rounded-2xl shadow">
-//         <h2 className="text-lg font-semibold text-slate-800">Notifications</h2>
-//         <ul className="space-y-3">
-//           <li className="bg-yellow-100 p-4 rounded-xl flex items-start gap-3">
-//             <RiAlertFill className="text-lg text-yellow-600 mt-0.5" />
-//             <div>
-//               <p className="text-sm text-yellow-800 font-semibold">
-//                 Assignment due soon
-//               </p>
-//               <span className="text-xs text-yellow-700">
-//                 Product Research assignment due in 2 days
-//               </span>
-//             </div>
-//           </li>
-//           <li className="bg-blue-100 p-4 rounded-xl flex gap-3 items-start">
-//             <RiInformationFill className="text-lg text-blue-600 mt-0.5" />
-//             <div>
-//               <p className="text-sm text-blue-900 font-semibold">
-//                 New session available
-//               </p>
-//               <span className="text-xs text-blue-800">
-//                 User Research II now live
-//               </span>
-//             </div>
-//           </li>
-//         </ul>
-//       </section>
-//     </div>
-//   );
-// }
-
-// export default StudentDashboard;

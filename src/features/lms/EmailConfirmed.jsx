@@ -9,7 +9,7 @@ function EmailConfirmed() {
   // This effect runs when the component mounts, indicating the email has been confirmed
   useEffect(() => {
     toast.success("Email confirmed! You're now signed in.");
-    const timer = setTimeout(() => navigate("/lms/student"), 2000);
+    const timer = setTimeout(() => navigate("/lms/student"), 4000);
     return () => clearTimeout(timer);
   }, [navigate]);
 

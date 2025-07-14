@@ -12,9 +12,11 @@ import ProtectedRoutes from "../features/lms/ProtectedRoutes";
 import ForgotPassword from "../features/lms/ForgotPassword";
 import UpdatePassword from "../features/lms/UpdatePassword";
 import EmailSent from "../features/lms/EmailSent";
-import { LMSProvider } from "../contexts/LMSContext";
 import SessionExpired from "../features/lms/SessionExpired";
 import EmailConfirmed from "../features/lms/EmailConfirmed";
+import ExploreCourses from "../features/lms/ExploreCourses";
+import StudentCourseDetail from "../features/lms/StudentCourseDetail";
+import LessonViewer from "../features/lms/LessonViewer";
 
 function LMS() {
   return (
@@ -28,17 +30,23 @@ function LMS() {
         <Route path="update-password" element={<UpdatePassword />} />
         <Route path="email-sent" element={<EmailSent />} />
         <Route path="email-confirmed" element={<EmailConfirmed />} />
+        <Route path="session-expired" element={<SessionExpired />} />
+        <Route path="courses" element={<ExploreCourses />} />
 
         <Route element={<ProtectedRoutes />}>
           <Route path="student" element={<StudentLMSLayout />}>
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<StudentDashboard />} />
             <Route path="mycourses" element={<StudentCourses />} />
+            <Route path="mycourses/:id" element={<StudentCourseDetail />} />
+            <Route
+              path="mycourses/:courseId/lesson/:lessonId"
+              element={<LessonViewer />}
+            />
             <Route path="assignments" element={<StudentAssignments />} />
             <Route path="certificates" element={<StudentCertificates />} />
             <Route path="settings" element={<StudentSettings />} />
           </Route>
-          <Route path="session-expired" element={<SessionExpired />} />
         </Route>
       </Routes>
     </main>

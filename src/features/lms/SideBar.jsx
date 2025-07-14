@@ -17,7 +17,7 @@ const links = [
   },
   {
     id: 445,
-    to: "my-courses",
+    to: "mycourses",
     linkIcon: <FiBook />,
     linkName: "My Courses",
   },
@@ -47,16 +47,17 @@ function SideBar() {
   return (
     <div className="md:col-start-1 md:row-start-2">
       <aside
-        className={`fixed md:relative z-40 h-full bg-white border-r border-gray-200 py-10 px-6 transition-all duration-400 ease-in-out  ${
+        className={`fixed z-40 h-full border-r border-gray-200 bg-white px-6 py-10 transition-all duration-400 ease-in-out md:relative xl:px-10 ${
           sidebarOpen ? "w-[55%] translate-x-0" : "w-[55%] -translate-x-full"
         } md:w-full md:translate-x-0`}
       >
-        <ul className="flex flex-col gap-3 justify-center font-medium">
-          {links.map(link => (
+        <ul className="flex flex-col justify-center gap-3 font-medium">
+          {links.map((link) => (
             <li key={link.id}>
               <NavLink
                 to={link.to}
-                className="flex items-center gap-2 text-[15px] px-6 py-2 rounded-lg hover:bg-gray-50"
+                onClick={() => setSidebarOpen(false)}
+                className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs hover:bg-gray-50 md:px-6 lg:text-sm xl:text-base"
               >
                 {link.linkIcon} <span>{link.linkName}</span>
               </NavLink>
@@ -68,7 +69,7 @@ function SideBar() {
       {/* Overlay for mobile sidebar */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black top-[65px] opacity-40 md:hidden z-30"
+          className="fixed inset-0 top-[65px] z-30 bg-black opacity-40 md:hidden"
           onClick={() => setSidebarOpen(false)}
         ></div>
       )}

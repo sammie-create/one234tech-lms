@@ -1,14 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import { useAuthContext } from "./AuthContext";
-import { useUserProfile } from "../hooks/useUserProfile";
 
 const LMSContext = createContext();
 
 function LMSProvider({ children }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user } = useAuthContext();
-  const { data: student } = useUserProfile(user?.id);
 
   return (
     <LMSContext.Provider
@@ -17,7 +13,6 @@ function LMSProvider({ children }) {
         setDropdownOpen,
         sidebarOpen,
         setSidebarOpen,
-        student,
       }}
     >
       {children}

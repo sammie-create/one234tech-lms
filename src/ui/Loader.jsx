@@ -1,13 +1,14 @@
 import Lottie from "lottie-react";
-import loadingAnimation from "../assets/animation/auth-loader.json";
+// import loadingAnimation from "../assets/animation/auth-loader.json";
+import loadingAnimation from "../assets/animation/spin-loader.json";
 
 function Loader() {
   return (
     <div
       data-aos=""
-      className="fixed bg-white/20 inset-0 z-50 flex justify-center items-center"
+      className="absolute inset-0 z-50 flex items-center justify-center bg-white"
     >
-      <div className=" w-35 h-35 md:w-50 md:h-50">
+      <div className="h-20 w-20 md:h-35 md:w-35">
         <Lottie animationData={loadingAnimation} />
       </div>
     </div>

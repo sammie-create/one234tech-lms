@@ -5,6 +5,7 @@ import { supabase } from "../integrations/supabaseClient";
 
 import { useAuthContext } from "../contexts/AuthContext";
 
+// This hook provides authentication functionalities like sign up, sign in, and sign out
 function useAuth() {
   const { signOut } = useAuthContext();
   const [isLoading, setIsLoading] = useState(false);
@@ -16,8 +17,8 @@ function useAuth() {
     setIsLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
+      const { _, error } = await supabase.auth.signUp({
+        email: email.toLowerCase(),
         password,
         options: {
           emailRedirectTo:
@@ -37,15 +38,14 @@ function useAuth() {
 
       toast.success("Check your email to confirm your account");
       resetForm();
-      console.log(data);
-      // setTimeout(() => navigate("/lms"), 1000);
+
+      setTimeout(() => navigate("/email-sent"), 1000);
     } catch (err) {
-      //   setError("An error occured" + err.message);
+      console.error("Signup error:", err);
       toast.error("Signup error" + err.message);
     } finally {
       setIsLoading(false);
     }
-    // console.log(data.email);
   }
 
   // Sign in function
@@ -78,7 +78,7 @@ function useAuth() {
 
   // Sign out function
   function handleSignOut() {
-    signOut(navigate);
+    signOut();
   }
 
   return { handleSignUp, handleSignIn, handleSignOut, isLoading };

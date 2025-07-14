@@ -23,23 +23,23 @@ function LMSNavbar() {
   // if (isLoading) return <Loader />;
 
   const studentName = student?.name.split(" ")[0];
-  console.log(student);
+  // console.log(student);
 
   return (
-    <nav className="bg-white flex justify-between items-center px-8 py-2.5 border-b border-gray-200 relative md:col-span-2">
-      <div className="md:hidden relative w-5 h-5">
+    <nav className="relative flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2.5 md:col-span-2 md:px-8">
+      <div className="relative h-5 w-5 md:hidden">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="relative w-6 h-6 inset-0 text-gray-700 hover:text-gray-900 cursor-pointer"
+          className="relative inset-0 h-6 w-6 cursor-pointer text-gray-700 hover:text-gray-900"
         >
           <RiMenu2Fill
-            className={`w-5 h-5 absolute top-0 transition-all duration-300 ease-in-out ${
-              sidebarOpen ? "opacity-0 scale-90" : "opacity-100 scale-100"
+            className={`absolute top-0 h-5 w-5 transition-all duration-300 ease-in-out ${
+              sidebarOpen ? "scale-90 opacity-0" : "scale-100 opacity-100"
             }`}
           />
           <RiCloseLargeFill
-            className={`w-5 h-5 absolute top-0 transition-all duration-300 ease-in-out ${
-              sidebarOpen ? "opacity-100 scale-100" : "opacity-0 scale-90"
+            className={`absolute top-0 h-5 w-5 transition-all duration-300 ease-in-out ${
+              sidebarOpen ? "scale-100 opacity-100" : "scale-90 opacity-0"
             }`}
           />
         </button>
@@ -50,42 +50,22 @@ function LMSNavbar() {
           LMS
         </Link>
       </div> */}
-      <div className="w-7 h-7 md:w-10 md:h-10 bg-gradient-to-r from-green-500 to-emerald-600 rounded-sm flex items-center justify-center">
+      <div className="flex h-7 w-7 items-center justify-center rounded-sm bg-gradient-to-r from-green-500 to-emerald-600 md:h-10 md:w-10">
         <Link to="/">
-          <HiAcademicCap className="w-4 h-4 md:w-6 md:h-6 text-white" />
+          <HiAcademicCap className="h-4 w-4 text-white md:h-6 md:w-6" />
         </Link>
       </div>
 
-      {/* <div className="hidden md:flex items-center space-x-6">
-    <Link
-      to="/"
-      className="text-sm font-medium text-gray-600 hover:text-blue-600"
-    >
-      Home
-    </Link>
-    <Link
-      to="/my-courses"
-      className="text-sm font-medium text-gray-600 hover:text-blue-600"
-    >
-      My Courses
-    </Link>
-    <Link
-      to="/support"
-      className="text-sm font-medium text-gray-600 hover:text-blue-600"
-    >
-      Support
-    </Link>
-  </div> */}
       <div className="relative">
         <button
           onClick={() => setDropdownOpen(!dropdownOpen)}
-          className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900 cursor-pointer"
+          className="flex cursor-pointer items-center space-x-2 text-sm font-medium text-gray-700 hover:text-gray-900"
         >
-          <FiUser className="w-5 h-5" />
+          <FiUser className="h-5 w-5" />
           <span>{studentName}</span>
         </button>
         {dropdownOpen && (
-          <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-lg z-50">
+          <div className="absolute right-0 z-50 mt-2 w-40 rounded border border-gray-200 bg-white shadow-lg">
             <Link
               to="/settings"
               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -93,8 +73,11 @@ function LMSNavbar() {
               <FiSettings className="mr-2" /> Profile Settings
             </Link>
             <button
-              onClick={handleSignOut}
-              className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
+              onClick={() => {
+                handleSignOut();
+                setDropdownOpen(!dropdownOpen);
+              }}
+              className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
             >
               <FiLogOut className="mr-2" /> Sign out
             </button>
