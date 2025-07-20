@@ -6,24 +6,24 @@ import { useAuth } from "../../hooks/useAuth";
 import Loader from "../../ui/Loader";
 import { useLMSContext } from "../../contexts/LMSContext";
 import { HiAcademicCap } from "react-icons/hi2";
+import { useAuthContext } from "../../contexts/AuthContext";
+import { useUserProfile } from "../../hooks/useUserProfile";
 
 function LMSNavbar() {
   const { handleSignOut } = useAuth();
-  const {
-    sidebarOpen,
-    setSidebarOpen,
-    dropdownOpen,
-    setDropdownOpen,
-    student,
-  } = useLMSContext();
+  const { sidebarOpen, setSidebarOpen, dropdownOpen, setDropdownOpen } =
+    useLMSContext();
+
+  const { user } = useAuthContext();
+  const { studentProfile } = useUserProfile(user?.id);
 
   // const { user } = useAuthContext();
   // const { data, isLoading } = useUserProfile(user?.id);
 
   // if (isLoading) return <Loader />;
 
-  const studentName = student?.name.split(" ")[0];
-  // console.log(student);
+  const studentName = studentProfile?.name.split(" ")[0];
+  // console.log(studentProfile);
 
   return (
     <nav className="relative flex items-center justify-between border-b border-gray-200 bg-white px-4 py-2.5 md:col-span-2 md:px-8">

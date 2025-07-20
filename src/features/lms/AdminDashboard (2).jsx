@@ -279,7 +279,7 @@ import {
   FiDownload,
   FiCheck,
 } from "react-icons/fi";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../integrations/supabaseClient";
 
 export default function AdminDashboard() {
   const [adminName, setAdminName] = useState("Admin");
@@ -311,7 +311,7 @@ export default function AdminDashboard() {
     navigate("/login");
   };
 
-  const handleFileChange = e => {
+  const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
@@ -340,16 +340,16 @@ export default function AdminDashboard() {
       alert("Failed to mark as graded");
     } else {
       alert(`Marked ${title} as graded`);
-      setAssignments(prev =>
-        prev.map(a => (a.id === assignmentId ? { ...a, graded: true } : a))
+      setAssignments((prev) =>
+        prev.map((a) => (a.id === assignmentId ? { ...a, graded: true } : a)),
       );
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] text-gray-800 font-sans">
-      <nav className="bg-white flex justify-between items-center px-6 py-4 border-b border-gray-100 shadow-sm">
-        <div className="text-2xl font-extrabold text-emerald-600 tracking-tight">
+    <div className="min-h-screen bg-[#F9FAFB] font-sans text-gray-800">
+      <nav className="flex items-center justify-between border-b border-gray-100 bg-white px-6 py-4 shadow-sm">
+        <div className="text-2xl font-extrabold tracking-tight text-emerald-600">
           Admin Panel
         </div>
         <div className="md:hidden">
@@ -357,7 +357,7 @@ export default function AdminDashboard() {
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="text-gray-700 hover:text-emerald-600"
           >
-            <FiMenu className="w-6 h-6" />
+            <FiMenu className="h-6 w-6" />
           </button>
         </div>
         <div className="relative">
@@ -365,11 +365,11 @@ export default function AdminDashboard() {
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-emerald-600"
           >
-            <FiUser className="w-5 h-5" />
+            <FiUser className="h-5 w-5" />
             <span>{adminName}</span>
           </button>
           {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-lg z-50">
+            <div className="absolute right-0 z-50 mt-2 w-40 rounded border border-gray-200 bg-white shadow-lg">
               <Link
                 to="/admin/settings"
                 className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -378,7 +378,7 @@ export default function AdminDashboard() {
               </Link>
               <button
                 onClick={handleLogout}
-                className="w-full text-left flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
               >
                 <FiLogOut className="mr-2" /> Logout
               </button>
@@ -389,9 +389,9 @@ export default function AdminDashboard() {
 
       <div className="flex min-h-screen">
         <aside
-          className={`fixed md:relative z-40 w-64 bg-black text-white p-6 border-r border-gray-800 transform ${
+          className={`fixed z-40 w-64 transform border-r border-gray-800 bg-black p-6 text-white md:relative ${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 transition-transform duration-200 ease-in-out`}
+          } transition-transform duration-200 ease-in-out md:translate-x-0`}
         >
           <ul className="space-y-6 text-sm font-medium">
             <li className="flex items-center space-x-2 text-emerald-400">
@@ -434,23 +434,23 @@ export default function AdminDashboard() {
 
         {sidebarOpen && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-30 md:hidden z-30"
+            className="bg-opacity-30 fixed inset-0 z-30 bg-black md:hidden"
             onClick={() => setSidebarOpen(false)}
           ></div>
         )}
 
-        <main className="flex-1 p-6 space-y-8 md:ml-0">
-          <div className="bg-emerald-50 p-6 rounded-xl border border-emerald-100 shadow">
+        <main className="flex-1 space-y-8 p-6 md:ml-0">
+          <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-6 shadow">
             <h1 className="text-2xl font-semibold text-emerald-700">
               Welcome, {adminName}!
             </h1>
-            <p className="text-sm text-emerald-500 mt-1">
+            <p className="mt-1 text-sm text-emerald-500">
               Monitor and manage the LMS efficiently.
             </p>
           </div>
 
-          <section className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+          <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+            <h2 className="mb-4 text-lg font-semibold text-gray-800">
               Upload New Course Material (PDF, Video, etc.)
             </h2>
             <div className="flex items-center space-x-4">
@@ -463,7 +463,7 @@ export default function AdminDashboard() {
               <button
                 onClick={handleUpload}
                 disabled={uploading || !file}
-                className="flex items-center bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded text-sm disabled:opacity-50"
+                className="flex items-center rounded bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700 disabled:opacity-50"
               >
                 <FiUpload className="mr-2" />{" "}
                 {uploading ? "Uploading..." : "Upload"}
@@ -471,8 +471,8 @@ export default function AdminDashboard() {
             </div>
           </section>
 
-          <section className="bg-white border border-gray-200 p-6 rounded-lg shadow-sm">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
+          <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+            <h2 className="mb-4 text-lg font-semibold text-gray-800">
               Submitted Assignments
             </h2>
             {assignments.length === 0 ? (
@@ -481,17 +481,17 @@ export default function AdminDashboard() {
               </p>
             ) : (
               <ul className="divide-y divide-gray-100">
-                {assignments.map(a => (
+                {assignments.map((a) => (
                   <li
                     key={a.id}
-                    className="py-3 text-sm text-gray-700 flex justify-between items-center"
+                    className="flex items-center justify-between py-3 text-sm text-gray-700"
                   >
                     <div>
                       <span className="font-medium">{a.student_name}</span>{" "}
                       submitted "{a.title}" on{" "}
                       {new Date(a.submitted_at).toLocaleDateString()}
                       {a.graded && (
-                        <span className="ml-2 text-xs text-white bg-emerald-500 px-2 py-1 rounded-full">
+                        <span className="ml-2 rounded-full bg-emerald-500 px-2 py-1 text-xs text-white">
                           Graded
                         </span>
                       )}
@@ -503,7 +503,7 @@ export default function AdminDashboard() {
                         rel="noopener noreferrer"
                         className="text-emerald-600 hover:text-emerald-800"
                       >
-                        <FiDownload className="inline mr-1" />
+                        <FiDownload className="mr-1 inline" />
                         Download
                       </a>
                       <button
@@ -511,7 +511,7 @@ export default function AdminDashboard() {
                         disabled={a.graded}
                         className="text-yellow-500 hover:text-yellow-600 disabled:opacity-50"
                       >
-                        <FiCheck className="inline mr-1" />
+                        <FiCheck className="mr-1 inline" />
                         {a.graded ? "Graded" : "Mark Graded"}
                       </button>
                     </div>
@@ -521,18 +521,18 @@ export default function AdminDashboard() {
             )}
           </section>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-br from-emerald-50 to-white p-4 rounded-xl shadow border border-emerald-100">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+            <div className="rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-white p-4 shadow">
               <h4 className="text-sm text-gray-600">Total Students</h4>
-              <p className="text-2xl font-bold text-emerald-700 mt-1">248</p>
+              <p className="mt-1 text-2xl font-bold text-emerald-700">248</p>
             </div>
-            <div className="bg-gradient-to-br from-emerald-50 to-white p-4 rounded-xl shadow border border-emerald-100">
+            <div className="rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-white p-4 shadow">
               <h4 className="text-sm text-gray-600">Courses Offered</h4>
-              <p className="text-2xl font-bold text-emerald-700 mt-1">36</p>
+              <p className="mt-1 text-2xl font-bold text-emerald-700">36</p>
             </div>
-            <div className="bg-gradient-to-br from-emerald-50 to-white p-4 rounded-xl shadow border border-emerald-100">
+            <div className="rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-white p-4 shadow">
               <h4 className="text-sm text-gray-600">Active Sessions</h4>
-              <p className="text-2xl font-bold text-emerald-700 mt-1">5</p>
+              <p className="mt-1 text-2xl font-bold text-emerald-700">5</p>
             </div>
           </div>
 
@@ -541,13 +541,13 @@ export default function AdminDashboard() {
               Recent Activities
             </h2>
             <ul className="space-y-3">
-              <li className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm text-sm text-gray-700">
+              <li className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-700 shadow-sm">
                 Student Jane Doe enrolled in "Product Discovery".
               </li>
-              <li className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm text-sm text-gray-700">
+              <li className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-700 shadow-sm">
                 Admin updated the "UI/UX Foundations" course module.
               </li>
-              <li className="bg-white border border-gray-200 p-4 rounded-lg shadow-sm text-sm text-gray-700">
+              <li className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-700 shadow-sm">
                 Report generated for April 2025.
               </li>
             </ul>
@@ -555,7 +555,7 @@ export default function AdminDashboard() {
         </main>
       </div>
 
-      <footer className="text-center py-4 text-sm text-gray-400 border-t border-gray-200">
+      <footer className="border-t border-gray-200 py-4 text-center text-sm text-gray-400">
         © 2025 LMS Admin. Terms · Privacy Policy
       </footer>
     </div>

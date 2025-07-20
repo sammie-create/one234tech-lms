@@ -5,7 +5,7 @@ import LMSFooter from "./LMSFooter";
 import { useAuthContext } from "../../contexts/AuthContext";
 import Loader from "../../ui/Loader";
 
-function StudentLMSLayout() {
+function StudentIndex() {
   const { authLoading } = useAuthContext();
 
   return (
@@ -29,4 +29,4 @@ function StudentLMSLayout() {
   );
 }
 
-export default StudentLMSLayout;
+export default StudentIndex;

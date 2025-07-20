@@ -10,7 +10,7 @@ function CallToAction() {
     ? userRole === "admin"
       ? "lms/admin"
       : "/lms/student"
-    : "/lms/signin";
+    : "/lms/signup";
 
   return (
     <section className="relative mt-6 overflow-hidden bg-green-700 bg-[url('/green-bg.svg')] bg-cover bg-center bg-no-repeat py-14 text-white bg-blend-multiply xl:mt-10">

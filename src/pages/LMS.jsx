@@ -2,12 +2,12 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import StudentSignIn from "../features/lms/StudentSignIn";
 import StudentSignUp from "../features/lms/StudentSignUp";
 import AdminSignIn from "../features/lms/AdminSignIn";
-import StudentLMSLayout from "../features/lms/StudentLMSLayout";
+import StudentIndex from "../features/lms/StudentIndex";
 import StudentDashboard from "../features/lms/StudentDashboard";
 import StudentCourses from "../features/lms/StudentCourses";
 import StudentAssignments from "../features/lms/StudentAssignments";
 import StudentCertificates from "../features/lms/StudentCertificates";
-import StudentSettings from "../features/lms/StudentSettings";
+import SettingsPage from "../features/lms/SettingsPage";
 import ProtectedRoutes from "../features/lms/ProtectedRoutes";
 import ForgotPassword from "../features/lms/ForgotPassword";
 import UpdatePassword from "../features/lms/UpdatePassword";
@@ -17,6 +17,8 @@ import EmailConfirmed from "../features/lms/EmailConfirmed";
 import ExploreCourses from "../features/lms/ExploreCourses";
 import StudentCourseDetail from "../features/lms/StudentCourseDetail";
 import LessonViewer from "../features/lms/LessonViewer";
+import AdminDashboard from "../features/lms/AdminDashboard (2)";
+import AdminIndex from "../features/lms/AdminIndex";
 
 function LMS() {
   return (
@@ -34,7 +36,7 @@ function LMS() {
         <Route path="courses" element={<ExploreCourses />} />
 
         <Route element={<ProtectedRoutes />}>
-          <Route path="student" element={<StudentLMSLayout />}>
+          <Route path="student" element={<StudentIndex />}>
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<StudentDashboard />} />
             <Route path="mycourses" element={<StudentCourses />} />
@@ -45,7 +47,11 @@ function LMS() {
             />
             <Route path="assignments" element={<StudentAssignments />} />
             <Route path="certificates" element={<StudentCertificates />} />
-            <Route path="settings" element={<StudentSettings />} />
+            <Route path="settings" element={<SettingsPage />} />
+          </Route>
+          <Route path="admin" element={<AdminIndex />}>
+            <Route index element={<Navigate replace to="dashboard" />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
           </Route>
         </Route>
       </Routes>

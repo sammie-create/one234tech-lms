@@ -98,7 +98,7 @@ function StudentDashboard() {
                   size={"medium"}
                   variation={"primary"}
                   style={
-                    "text-xs col-span-2 md:text-sm md:h-11 md:w-28 xl:w-34 md:self-center md:col-span-1"
+                    "text-xs lg:flex items-center justify-center col-span-2 md:text-sm md:h-11 md:w-28 xl:w-34 md:self-center md:col-span-1"
                   }
                 >
                   Continue

@@ -39,7 +39,7 @@ function useAuth() {
       toast.success("Check your email to confirm your account");
       resetForm();
 
-      setTimeout(() => navigate("/email-sent"), 1000);
+      setTimeout(() => navigate("/lms/email-sent"), 1000);
     } catch (err) {
       console.error("Signup error:", err);
       toast.error("Signup error" + err.message);
@@ -68,7 +68,9 @@ function useAuth() {
       toast.success("Signed in successfully");
 
       const role = user.user_metadata?.role || "student";
-      navigate(role === "admin" ? "admin" : "/lms/student", { replace: true });
+      navigate(role === "admin" ? "/lms/admin" : "/lms/student", {
+        replace: true,
+      });
     } catch (err) {
       toast.error(err.message || "Network error. Please try again");
     } finally {

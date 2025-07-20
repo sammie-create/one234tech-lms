@@ -13,10 +13,10 @@ function HeroSection() {
     : "/lms/signin";
 
   return (
-    <section className="bg-white px-6 py-12 md:px-8 md:py-20 lg:px-10 lg:py-25 xl:px-20">
+    <section className="bg-white px-6 py-12 md:px-8 md:py-20 lg:px-10 lg:py-20 xl:px-20">
       <div className="mx-auto flex max-w-7xl flex-col-reverse items-center gap-10 md:flex-row md:gap-5 xl:gap-10">
         {/* Text content */}
-        <div className="flex-1 lg:flex-[1.2] lg:text-left">
+        <div className="flex-1 lg:flex-[1] lg:text-left">
           <h1
             data-aos="zoom-in"
             className="text-[25px] leading-tight font-bold text-gray-800 md:text-[30px] lg:text-[45px] xl:text-[55px]"

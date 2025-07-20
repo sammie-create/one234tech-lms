@@ -13,11 +13,11 @@
   }
 
   .btn-small {
-    @apply p-[0.6rem] md:px-6 md:py-3 md:text-[12px] lg:px-10 lg:py-4 lg:text-[14px];
+    @apply p-[0.6rem] md:px-6 md:py-3 md:text-[12px] lg:px-3.5 lg:py-2 lg:text-[14px];
   }
 
   .btn-medium {
-    @apply px-[0.85rem] py-[0.7rem] md:px-[1rem] md:text-[12px] lg:px-[1.5rem] lg:py-[1rem] lg:text-base;
+    @apply px-[0.85rem] py-[0.7rem] md:px-[1rem] md:text-[12px] lg:px-4 lg:py-2.5 lg:text-base;
   }
   /* 
   .btn-large {
