@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { supabase } from "../../integrations/supabaseClient";
-import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { updatePasswordHelper } from "../../helpers/updatePasswordHelper";
 
 function UpdatePassword() {
   const {
@@ -18,14 +17,11 @@ function UpdatePassword() {
 
   async function onSubmit({ password }) {
     setIsLoading(true);
-    const { error } = await supabase.auth.updateUser({ password });
 
-    if (error) {
-      toast.error(error.message);
-    } else {
-      toast.success("Password updated! You can now sign in.");
-      navigate("/lms/signin");
-    }
+    await updatePasswordHelper({
+      password,
+      onSuccess: () => navigate("/lms/signin"),
+    });
 
     setIsLoading(false);
   }

@@ -2,22 +2,27 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { HiCamera, HiPencil, HiTrash, HiUpload, HiUser } from "react-icons/hi";
+import { MdCancel } from "react-icons/md";
+import { ImSpinner2 } from "react-icons/im";
 
-import { supabase } from "../../integrations/supabaseClient";
 import { useUserProfile } from "../../hooks/useUserProfile";
 import { useAuthContext } from "../../contexts/AuthContext";
-import { MdCancel } from "react-icons/md";
+import { useSignedStorageUrl } from "../../hooks/useSignedStorageUrl";
+import { updatePasswordHelper } from "../../helpers/updatePasswordHelper";
+import { uploadFileHelper } from "../../helpers/uploadFileHelper";
+import { removeFileHelper } from "../../helpers/removeFileHelper";
 
 export default function SettingsPage() {
   const { user } = useAuthContext();
-  const { studentProfile, profileLoading, refetchProfile } = useUserProfile(
-    user?.id,
-  );
+  const { profile, profileLoading, refetchProfile } = useUserProfile(user?.id);
+  const { data: signedAvatarUrl, isLoading: avatarLoading } =
+    useSignedStorageUrl("profile-images", profile?.profile_picture_url);
+
   const { register, handleSubmit, reset } = useForm();
-  const [editingName, setEditingName] = useState(false);
+  // const [editingName, setEditingName] = useState(false);
   const [editingPassword, setEditingPassword] = useState(false);
   const [showImageOptions, setShowImageOptions] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [setUploading] = useState(false);
 
   console.log(user);
 
@@ -36,39 +41,33 @@ export default function SettingsPage() {
   //   }
 
   async function updatePassword({ password }) {
-    const { error } = await supabase.auth.updateUser({ password });
-    if (error) toast.error("Password update failed");
-    else {
-      toast.success("Password updated");
-      setEditingPassword(false);
-      reset();
-    }
+    await updatePasswordHelper({
+      password,
+      onSuccess: () => {
+        setEditingPassword(false);
+        reset();
+      },
+    });
   }
 
   async function handleImageUpload(e) {
     const file = e.target.files[0];
+    console.log(file);
     if (!file || !user?.id) return;
     try {
       setUploading(true);
-      const filePath = `image/${user.id}/${file.name}`;
-      const { error: uploadError } = await supabase.storage
-        .from("profile-images")
-        .upload(filePath, file, {
-          cacheControl: "3600",
-          upsert: true,
-        });
 
-      console.log("upload error:", uploadError);
-      if (uploadError) throw uploadError;
-
-      const { error: updateError } = await supabase
-        .from("profiles")
-        .update({ profile_picture_url: filePath })
-        .eq("id", user.id);
-
-      if (updateError) throw updateError;
-
-      toast.success("Profile picture updated");
+      await uploadFileHelper({
+        file,
+        userId: user.id,
+        bucket: "profile-images",
+        dbUpdate: {
+          table: "profiles",
+          key: "id",
+          pathField: "profile_picture_url",
+        },
+      });
+      setShowImageOptions(false);
       refetchProfile();
     } catch (error) {
       toast.error(error.message || "Upload failed");
@@ -78,16 +77,38 @@ export default function SettingsPage() {
   }
 
   async function handleRemoveImage() {
-    if (!studentProfile?.profile_picture_url) return;
-    await supabase.storage
-      .from("pofile-images")
-      .remove([studentProfile.profile_picture_url]);
-    await supabase
-      .from("profiles")
-      .update({ profile_picture_url: null })
-      .eq("id", user.id);
-    toast.success("Profile picture removed");
-    refetchProfile();
+    if (!profile?.profile_picture_url) return;
+
+    try {
+      await removeFileHelper({
+        bucket: "profile-images",
+        filePath: profile.profile_picture_url,
+        dbUpdate: {
+          table: "profiles",
+          key: "id",
+          keyValue: user.id,
+          pathField: "profile_picture_url",
+        },
+        confirmFn: () =>
+          Promise.resolve(
+            window.confirm("Are you sure you want to remove this image"),
+          ),
+      });
+
+      // await supabase.storage
+      //   .from("profile-images")
+      //   .remove([profile.profile_picture_url]);
+      // await supabase
+      //   .from("profiles")
+      //   .update({ profile_picture_url: null })
+      //   .eq("id", user.id);
+      // toast.success("Profile picture removed");
+      setShowImageOptions(false);
+      refetchProfile();
+    } catch (error) {
+      toast.dismiss();
+      toast.error(error.message || "Failed to remove image");
+    }
   }
 
   return (
@@ -97,11 +118,18 @@ export default function SettingsPage() {
       {/* Profile Picture Section */}
 
       <div className="group relative w-fit self-center">
-        <img
-          src={studentProfile?.signedAvatarUrl || "/user.png"}
-          alt="Profile Image"
-          className={`h-30 w-30 rounded-full border border-gray-300 object-cover ${!studentProfile?.signedAvatarUrl && "p-4"}`}
-        />
+        {profileLoading || avatarLoading ? (
+          <div className="flex h-30 w-30 items-center justify-center">
+            <ImSpinner2 className="h-8 w-8 animate-spin text-gray-600" />
+          </div>
+        ) : (
+          <img
+            src={signedAvatarUrl || "/user.png"}
+            alt="Profile Image"
+            loading="eager"
+            className={`h-30 w-30 rounded-full border border-gray-300 object-cover ${!signedAvatarUrl && "p-4"}`}
+          />
+        )}
         <button
           onClick={() => setShowImageOptions((prev) => !prev)}
           className="absolute right-0 bottom-0 rounded-full bg-emerald-400 p-1.5 text-white transition-all hover:bg-emerald-700"
@@ -137,7 +165,7 @@ export default function SettingsPage() {
           <label className="block text-sm font-medium lg:text-base">Name</label>
           <input
             type="text"
-            value={studentProfile?.name || ""}
+            value={profile?.name || ""}
             readOnly
             className="input input-bordered w-60 cursor-not-allowed rounded-sm border border-gray-200 bg-inherit p-2 text-xs outline-none focus:ring-1 focus:ring-emerald-300 lg:text-sm"
           />
@@ -149,7 +177,7 @@ export default function SettingsPage() {
           </label>
           <input
             type="email"
-            value={studentProfile?.email || ""}
+            value={profile?.email || ""}
             readOnly
             className="input input-bordered w-60 cursor-not-allowed rounded-sm border border-gray-200 bg-inherit p-2 text-xs outline-none focus:ring-1 focus:ring-emerald-300 lg:text-sm"
           />

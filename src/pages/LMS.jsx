@@ -1,24 +1,25 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import StudentSignIn from "../features/lms/StudentSignIn";
-import StudentSignUp from "../features/lms/StudentSignUp";
-import AdminSignIn from "../features/lms/AdminSignIn";
-import StudentIndex from "../features/lms/StudentIndex";
-import StudentDashboard from "../features/lms/StudentDashboard";
-import StudentCourses from "../features/lms/StudentCourses";
-import StudentAssignments from "../features/lms/StudentAssignments";
-import StudentCertificates from "../features/lms/StudentCertificates";
-import SettingsPage from "../features/lms/SettingsPage";
-import ProtectedRoutes from "../features/lms/ProtectedRoutes";
-import ForgotPassword from "../features/lms/ForgotPassword";
-import UpdatePassword from "../features/lms/UpdatePassword";
-import EmailSent from "../features/lms/EmailSent";
-import SessionExpired from "../features/lms/SessionExpired";
-import EmailConfirmed from "../features/lms/EmailConfirmed";
-import ExploreCourses from "../features/lms/ExploreCourses";
-import StudentCourseDetail from "../features/lms/StudentCourseDetail";
-import LessonViewer from "../features/lms/LessonViewer";
-import AdminDashboard from "../features/lms/AdminDashboard (2)";
-import AdminIndex from "../features/lms/AdminIndex";
+import StudentSignIn from "@/features/lms/StudentSignIn";
+import StudentSignUp from "@/features/lms/StudentSignUp";
+import AdminSignIn from "@/features/lms/admin/AdminSignIn";
+import StudentIndex from "@/features/lms/StudentIndex";
+import StudentDashboard from "@/features/lms/StudentDashboard";
+import StudentCourses from "@/features/lms/StudentCourses";
+import StudentAssignments from "@/features/lms/StudentAssignments";
+import StudentCertificates from "@/features/lms/StudentCertificates";
+import SettingsPage from "@/features/lms/SettingsPage";
+import ProtectedRoutes from "@/features/lms/ProtectedRoutes";
+import ForgotPassword from "@/features/lms/ForgotPassword";
+import UpdatePassword from "@/features/lms/UpdatePassword";
+import EmailSent from "@/features/lms/EmailSent";
+import SessionExpired from "@/features/lms/SessionExpired";
+import EmailConfirmed from "@/features/lms/EmailConfirmed";
+import ExploreCourses from "@/features/lms/ExploreCourses";
+import StudentCourseDetail from "@/features/lms/StudentCourseDetail";
+import LessonViewer from "@/features/lms/LessonViewer";
+import AdminDashboard from "@/features/lms/admin/AdminDashboard";
+import AdminIndex from "@/features/lms/admin/AdminIndex";
+import StudentManagementPage from "@/features/lms/admin/StudentManagement";
 
 function LMS() {
   return (
@@ -52,6 +53,7 @@ function LMS() {
           <Route path="admin" element={<AdminIndex />}>
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="manage-students" element={<StudentManagementPage />} />
           </Route>
         </Route>
       </Routes>

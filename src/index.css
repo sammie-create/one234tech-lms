@@ -1,8 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+/* @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"); */
+
+/* @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"); */
 
 @import "tailwindcss";
 
-@layer components {
+@plugin 'tailwind-scrollbar';
+
+@pl @layer components {
   .btn {
     border-radius: 5px;
     font-weight: var(--font-weight-semibold);
@@ -57,39 +63,65 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  @apply scrollbar-thin scroll-smooth;
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family:
+    "Poppins",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;
   font-style: normal;
-  font-size: 10px;
-  width: 100%;
 
-  @apply text-gray-600;
+  @apply w-full text-[11px] font-normal text-gray-600;
 }
 
 h1 {
-  @apply font-extrabold;
+  @apply font-bold;
 }
 
 h2 {
-  @apply text-xl font-bold text-gray-800 md:text-2xl xl:text-3xl;
+  @apply text-xl font-semibold text-gray-800 md:text-2xl xl:text-3xl;
 }
 
 h3 {
-  @apply text-sm font-semibold text-gray-700 md:text-lg;
+  @apply text-base font-medium text-gray-700 md:text-lg;
+}
+
+h4 {
+  @apply text-[13px];
 }
 
 a {
-  @apply cursor-pointer text-gray-500 transition-all duration-400;
+  @apply cursor-pointer text-gray-500 transition-all duration-100;
 
   &.active {
-    @apply bg-green-50 font-bold;
+    @apply border-l-2 border-l-green-500 bg-green-50 font-bold;
   }
   &.active svg {
     @apply text-gray-900;
   }
 }
+
+td,
+th {
+  @apply py-1;
+}
+
+/* thead tr {
+  @apply pb-5;
+} */
+
+/* tbody tr {
+  @apply odd:bg-lime-50 even:bg-emerald-50;
+} */

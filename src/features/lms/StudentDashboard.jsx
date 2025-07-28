@@ -6,16 +6,18 @@ import { useStudentStats } from "../../hooks/useStudentStats";
 import StudentDashboardProgressCard from "./StudentDashboardProgressCard";
 import Button from "../../ui/Button";
 import Loader from "../../ui/Loader";
+import { Link } from "react-router-dom";
 
 function StudentDashboard() {
   const { user } = useAuthContext();
-  const { studentProfile, profileLoading } = useUserProfile(user?.id);
+  const { profile, profileLoading } = useUserProfile(user?.id);
   const { overallProgress, courseProgresses, overallLoading, coursesLoading } =
     useStudentStats();
+  console.log(courseProgresses);
 
   const loading = overallLoading || coursesLoading || profileLoading;
 
-  const studentName = studentProfile?.name.split(" ")[0] || "Student";
+  const studentName = profile?.name.split(" ")[0] || "Student";
 
   // console.log(studentName);
   // console.log("Overall Progress:", overallProgress);
@@ -24,7 +26,7 @@ function StudentDashboard() {
   if (loading) return <Loader />;
 
   return (
-    <div data-aos="fade-in" className="flex flex-col gap-6">
+    <div data-aos="fade-in" className="space-y-6">
       {/* Welcome Banner */}
       <div className="rounded-2xl bg-gradient-to-r from-green-600 to-emerald-600 p-6 text-white shadow-lg">
         <h1 className="text-2xl font-semibold">Welcome, {studentName}</h1>
@@ -93,16 +95,17 @@ function StudentDashboard() {
                     ></div>
                   </div>
                 </div>
-
-                <Button
-                  size={"medium"}
-                  variation={"primary"}
-                  style={
-                    "text-xs lg:flex items-center justify-center col-span-2 md:text-sm md:h-11 md:w-28 xl:w-34 md:self-center md:col-span-1"
-                  }
-                >
-                  Continue
-                </Button>
+                <Link to={`/lms/student/mycourses/${course.course_id}`}>
+                  <Button
+                    size={"medium"}
+                    variation={"primary"}
+                    style={
+                      "text-xs lg:flex items-center justify-center col-span-2 md:text-sm md:h-11 md:w-28 xl:w-34 md:self-center md:col-span-1"
+                    }
+                  >
+                    Continue
+                  </Button>
+                </Link>
               </div>
             ))
           ) : (

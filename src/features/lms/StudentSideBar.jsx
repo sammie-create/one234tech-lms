@@ -57,7 +57,7 @@ function SideBar() {
               <NavLink
                 to={link.to}
                 onClick={() => setSidebarOpen(false)}
-                className="flex items-center gap-2 rounded-lg px-3 py-2 text-xs hover:bg-gray-50 md:px-6 lg:text-sm xl:text-base"
+                className="ac flex items-center gap-2 rounded-lg px-3 py-2 text-xs hover:bg-gray-50 md:px-6 lg:text-sm xl:text-base"
               >
                 {link.linkIcon} <span>{link.linkName}</span>
               </NavLink>
@@ -69,7 +69,7 @@ function SideBar() {
       {/* Overlay for mobile sidebar */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 top-[65px] z-30 bg-black opacity-40 md:hidden"
+          className="fixed inset-0 top-[53px] z-30 bg-black opacity-40 md:hidden"
           onClick={() => setSidebarOpen(false)}
         ></div>
       )}

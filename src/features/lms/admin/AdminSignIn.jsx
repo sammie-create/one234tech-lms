@@ -2,7 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 import AuthForm from "@/features/authentication/AuthForm";
 import Loader from "@/ui/Loader";
 
-function StudentSignIn() {
+function AdminSignIn() {
   const { handleSignIn, isLoading } = useAuth();
 
   return (
@@ -11,9 +11,9 @@ function StudentSignIn() {
         <Loader />
       ) : (
         <AuthForm
-          title="Welcome Back"
-          subtitle="Continue your learning journey"
-          role="student"
+          title="Admin Access"
+          subtitle="Manage your dashboard"
+          role="admin"
           variant="signin"
           onSubmit={handleSignIn}
         />
@@ -22,4 +22,4 @@ function StudentSignIn() {
   );
 }
 
-export default StudentSignIn;
+export default AdminSignIn;

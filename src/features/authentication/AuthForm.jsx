@@ -158,7 +158,7 @@ function AuthForm({ title, subtitle, role, variant, onSubmit }) {
             </div>
           )}
 
-          <input type="hidden" value="student" {...register("role")} />
+          <input type="hidden" value={role} {...register("role")} />
 
           <button
             type="submit"
@@ -168,7 +168,7 @@ function AuthForm({ title, subtitle, role, variant, onSubmit }) {
           </button>
         </form>
 
-        {variant === "signin" && role === "Student" && (
+        {variant === "signin" && role === "student" && (
           <>
             <div className="mt-4 text-center text-gray-600">
               <Link
@@ -189,7 +189,7 @@ function AuthForm({ title, subtitle, role, variant, onSubmit }) {
               </Link>
             </p>
 
-            {role === "Student" && (
+            {role === "student" && (
               <div className="mt-3 text-center text-gray-600">
                 <Link
                   to="/lms/admin/signin"

@@ -64,10 +64,12 @@ function useAuth() {
       }
 
       const user = data.user;
+      console.log(user);
 
       toast.success("Signed in successfully");
 
       const role = user.user_metadata?.role || "student";
+      console.log(role);
       navigate(role === "admin" ? "/lms/admin" : "/lms/student", {
         replace: true,
       });

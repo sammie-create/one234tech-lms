@@ -13,10 +13,9 @@ function StudentCourseDetail() {
   const { data: modules, isLoading: modulesLoading } =
     useCourseModules(courseId);
   const [openModuleId, setOpenModuleId] = useState(null);
+  console.log(courses);
 
-  const course = courses?.find((c) => String(c.id) === courseId);
-  console.log(course);
-  console.log(modules);
+  const course = courses?.find((c) => String(c.course_id) === courseId);
 
   function toggleModule(moduleId) {
     setOpenModuleId((prev) => (prev === moduleId ? null : moduleId));
@@ -24,7 +23,7 @@ function StudentCourseDetail() {
 
   useEffect(() => {
     if (!authLoading && !isLoading && courses && !course) {
-      navigate("/dashboard");
+      navigate("/lms/student");
     }
   }, [authLoading, isLoading, courses, course, navigate]);
 

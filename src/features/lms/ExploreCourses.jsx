@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "../../integrations/supabaseClient";
+import { supabase } from "@/integrations/supabaseClient";
 import { Link } from "react-router-dom";
 import Navbar from "../index/Navbar";
 import Footer from "../index/Footer";

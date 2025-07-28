@@ -3,7 +3,7 @@ import { useCourseModules } from "../../hooks/useCourseModules";
 import { useLessonProgress } from "../../hooks/useLessonProgress";
 import Loader from "../../ui/Loader";
 import { useAuthContext } from "../../contexts/AuthContext";
-import { useSignedVideoUrl } from "../../hooks/useSignedVideoUrl";
+import { useSignedStorageUrl } from "../../hooks/useSignedStorageUrl";
 import toast from "react-hot-toast";
 
 function LessonViewer() {
@@ -29,7 +29,7 @@ function LessonViewer() {
     data: signedVideoUrl,
     isError: videoError,
     isLoading: videoLoading,
-  } = useSignedVideoUrl(currentLesson?.video_url);
+  } = useSignedStorageUrl("product-marketing-videos", currentLesson?.video_url);
 
   const loading =
     modulesLoading ||

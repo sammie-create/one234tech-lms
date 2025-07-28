@@ -265,299 +265,237 @@
 //   );
 // }
 
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  FiUsers,
-  FiBarChart2,
-  FiBookOpen,
-  FiSettings,
-  FiUser,
-  FiLogOut,
-  FiMenu,
-  FiUpload,
-  FiDownload,
-  FiCheck,
-} from "react-icons/fi";
-import { supabase } from "../../integrations/supabaseClient";
+// import React, { useEffect, useState } from "react";
 
-export default function AdminDashboard() {
-  const [adminName, setAdminName] = useState("Admin");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [file, setFile] = useState(null);
-  const [assignments, setAssignments] = useState([]);
-  const navigate = useNavigate();
+// import {
+//   FiUsers,
+//   FiBarChart2,
+//   FiBookOpen,
+//   FiSettings,
+//   FiUser,
+//   FiLogOut,
+//   FiMenu,
+//   FiUpload,
+//   FiDownload,
+//   FiCheck,
+//   FiUserPlus,
+// } from "react-icons/fi";
+// import { supabase } from "../../integrations/supabaseClient";
+import { HiMiniUser, HiMiniUsers } from "react-icons/hi2";
+import { HiOutlineStatusOnline, HiUserAdd } from "react-icons/hi";
+import { IoLibrary } from "react-icons/io5";
+import { RiAwardFill, RiTaskFill, RiUpload2Fill } from "react-icons/ri";
 
-  useEffect(() => {
-    async function fetchAdmin() {
-      const { data: user } = await supabase.auth.getUser();
-      setAdminName(user?.user?.user_metadata?.full_name || "Admin");
-    }
-    async function fetchAssignments() {
-      const { data, error } = await supabase
-        .from("assignments")
-        .select("id, student_name, title, submitted_at, file_path, graded")
-        .order("submitted_at", { ascending: false });
-      if (!error && data) setAssignments(data);
-    }
-    fetchAdmin();
-    fetchAssignments();
-  }, []);
+const popularCourses = [
+  {
+    id: 2000,
+    title: "Product Management",
+    progress: "60%",
+    enrolled: "2000",
+  },
+  {
+    id: 2100,
+    title: "Product Design",
+    progress: "30%",
+    enrolled: "4000",
+  },
+  {
+    id: 2200,
+    title: "Product Marketing",
+    progress: "70%",
+    enrolled: "3000",
+  },
+];
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/login");
-  };
+function AdminDashboard() {
+  // const [adminName, setAdminName] = useState("Admin");
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
+  // const [uploading, setUploading] = useState(false);
+  // const [file, setFile] = useState(null);
+  // const [assignments, setAssignments] = useState([]);
 
-  const handleUpload = async () => {
-    if (!file) return;
-    setUploading(true);
-    const { data, error } = await supabase.storage
-      .from("course-materials")
-      .upload(`materials/${file.name}`, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
-    setUploading(false);
-    if (error) alert("Upload failed");
-    else alert("Upload successful");
-    setFile(null);
-  };
+  // useEffect(() => {
+  //   async function fetchAdmin() {
+  //     const { data: user } = await supabase.auth.getUser();
+  //     setAdminName(user?.user?.user_metadata?.full_name || "Admin");
+  //   }
+  //   async function fetchAssignments() {
+  //     const { data, error } = await supabase
+  //       .from("assignments")
+  //       .select("id, student_name, title, submitted_at, file_path, graded")
+  //       .order("submitted_at", { ascending: false });
+  //     if (!error && data) setAssignments(data);
+  //   }
+  //   fetchAdmin();
+  //   fetchAssignments();
+  // }, []);
 
-  const handleMarkGraded = async (assignmentId, title) => {
-    const { error } = await supabase
-      .from("assignments")
-      .update({ graded: true })
-      .eq("id", assignmentId);
+  // // const handleLogout = async () => {
+  // //   await supabase.auth.signOut();
+  // //   navigate("/login");
+  // // };
 
-    if (error) {
-      alert("Failed to mark as graded");
-    } else {
-      alert(`Marked ${title} as graded`);
-      setAssignments((prev) =>
-        prev.map((a) => (a.id === assignmentId ? { ...a, graded: true } : a)),
-      );
-    }
-  };
+  // const handleFileChange = (e) => {
+  //   setFile(e.target.files[0]);
+  // };
+
+  // const handleUpload = async () => {
+  //   if (!file) return;
+  //   setUploading(true);
+  //   const { error } = await supabase.storage
+  //     .from("course-materials")
+  //     .upload(`materials/${file.name}`, file, {
+  //       cacheControl: "3600",
+  //       upsert: false,
+  //     });
+  //   setUploading(false);
+  //   if (error) alert("Upload failed");
+  //   else alert("Upload successful");
+  //   setFile(null);
+  // };
+
+  // const handleMarkGraded = async (assignmentId, title) => {
+  //   const { error } = await supabase
+  //     .from("assignments")
+  //     .update({ graded: true })
+  //     .eq("id", assignmentId);
+
+  //   if (error) {
+  //     alert("Failed to mark as graded");
+  //   } else {
+  //     alert(`Marked ${title} as graded`);
+  //     setAssignments((prev) =>
+  //       prev.map((a) => (a.id === assignmentId ? { ...a, graded: true } : a)),
+  //     );
+  //   }
+  // };
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] font-sans text-gray-800">
-      <nav className="flex items-center justify-between border-b border-gray-100 bg-white px-6 py-4 shadow-sm">
-        <div className="text-2xl font-extrabold tracking-tight text-emerald-600">
-          Admin Panel
-        </div>
-        <div className="md:hidden">
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-gray-700 hover:text-emerald-600"
-          >
-            <FiMenu className="h-6 w-6" />
-          </button>
-        </div>
-        <div className="relative">
-          <button
-            onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center space-x-2 text-sm font-medium text-gray-700 hover:text-emerald-600"
-          >
-            <FiUser className="h-5 w-5" />
-            <span>{adminName}</span>
-          </button>
-          {dropdownOpen && (
-            <div className="absolute right-0 z-50 mt-2 w-40 rounded border border-gray-200 bg-white shadow-lg">
-              <Link
-                to="/admin/settings"
-                className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
-                <FiSettings className="mr-2" /> Settings
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
-              >
-                <FiLogOut className="mr-2" /> Logout
-              </button>
-            </div>
-          )}
-        </div>
-      </nav>
-
-      <div className="flex min-h-screen">
-        <aside
-          className={`fixed z-40 w-64 transform border-r border-gray-800 bg-black p-6 text-white md:relative ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } transition-transform duration-200 ease-in-out md:translate-x-0`}
-        >
-          <ul className="space-y-6 text-sm font-medium">
-            <li className="flex items-center space-x-2 text-emerald-400">
-              <FiBarChart2 /> <span>Dashboard</span>
-            </li>
-            <li>
-              <Link
-                to="/admin/users"
-                className="flex items-center space-x-2 text-white hover:text-emerald-400"
-              >
-                <FiUsers /> <span>Manage Users</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/courses"
-                className="flex items-center space-x-2 text-white hover:text-emerald-400"
-              >
-                <FiBookOpen /> <span>Manage Courses</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/reports"
-                className="flex items-center space-x-2 text-white hover:text-emerald-400"
-              >
-                <FiBarChart2 /> <span>Reports</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/admin/settings"
-                className="flex items-center space-x-2 text-white hover:text-emerald-400"
-              >
-                <FiSettings /> <span>Settings</span>
-              </Link>
-            </li>
-          </ul>
-        </aside>
-
-        {sidebarOpen && (
-          <div
-            className="bg-opacity-30 fixed inset-0 z-30 bg-black md:hidden"
-            onClick={() => setSidebarOpen(false)}
-          ></div>
-        )}
-
-        <main className="flex-1 space-y-8 p-6 md:ml-0">
-          <div className="rounded-xl border border-emerald-100 bg-emerald-50 p-6 shadow">
-            <h1 className="text-2xl font-semibold text-emerald-700">
-              Welcome, {adminName}!
-            </h1>
-            <p className="mt-1 text-sm text-emerald-500">
-              Monitor and manage the LMS efficiently.
-            </p>
+    <div className="space-y-6">
+      <section className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+        <div className="space-y-4 rounded-xl border border-gray-100 bg-gradient-to-r from-green-600 to-emerald-600 p-4">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white">
+            <HiMiniUsers className="h-3.5 w-3.5 text-green-600" />
           </div>
-
-          <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-gray-800">
-              Upload New Course Material (PDF, Video, etc.)
-            </h2>
-            <div className="flex items-center space-x-4">
-              <input
-                type="file"
-                accept=".pdf,.mp4,.mov,.docx,.pptx"
-                onChange={handleFileChange}
-                className="text-sm"
-              />
-              <button
-                onClick={handleUpload}
-                disabled={uploading || !file}
-                className="flex items-center rounded bg-emerald-600 px-4 py-2 text-sm text-white hover:bg-emerald-700 disabled:opacity-50"
-              >
-                <FiUpload className="mr-2" />{" "}
-                {uploading ? "Uploading..." : "Upload"}
-              </button>
-            </div>
-          </section>
-
-          <section className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-            <h2 className="mb-4 text-lg font-semibold text-gray-800">
-              Submitted Assignments
-            </h2>
-            {assignments.length === 0 ? (
-              <p className="text-sm text-gray-500">
-                No assignments submitted yet.
-              </p>
-            ) : (
-              <ul className="divide-y divide-gray-100">
-                {assignments.map((a) => (
-                  <li
-                    key={a.id}
-                    className="flex items-center justify-between py-3 text-sm text-gray-700"
-                  >
-                    <div>
-                      <span className="font-medium">{a.student_name}</span>{" "}
-                      submitted "{a.title}" on{" "}
-                      {new Date(a.submitted_at).toLocaleDateString()}
-                      {a.graded && (
-                        <span className="ml-2 rounded-full bg-emerald-500 px-2 py-1 text-xs text-white">
-                          Graded
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex space-x-3">
-                      <a
-                        href={`https://YOUR_SUPABASE_URL/storage/v1/object/public/assignments/${a.file_path}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-emerald-600 hover:text-emerald-800"
-                      >
-                        <FiDownload className="mr-1 inline" />
-                        Download
-                      </a>
-                      <button
-                        onClick={() => handleMarkGraded(a.id, a.title)}
-                        disabled={a.graded}
-                        className="text-yellow-500 hover:text-yellow-600 disabled:opacity-50"
-                      >
-                        <FiCheck className="mr-1 inline" />
-                        {a.graded ? "Graded" : "Mark Graded"}
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-            <div className="rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-white p-4 shadow">
-              <h4 className="text-sm text-gray-600">Total Students</h4>
-              <p className="mt-1 text-2xl font-bold text-emerald-700">248</p>
-            </div>
-            <div className="rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-white p-4 shadow">
-              <h4 className="text-sm text-gray-600">Courses Offered</h4>
-              <p className="mt-1 text-2xl font-bold text-emerald-700">36</p>
-            </div>
-            <div className="rounded-xl border border-emerald-100 bg-gradient-to-br from-emerald-50 to-white p-4 shadow">
-              <h4 className="text-sm text-gray-600">Active Sessions</h4>
-              <p className="mt-1 text-2xl font-bold text-emerald-700">5</p>
-            </div>
+          <div className="text-white">
+            <p className="text-base font-bold md:text-lg">2 345</p>
+            <p className="md:text-sm">Total Students</p>
           </div>
+        </div>
 
-          <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-800">
-              Recent Activities
-            </h2>
-            <ul className="space-y-3">
-              <li className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-700 shadow-sm">
-                Student Jane Doe enrolled in "Product Discovery".
-              </li>
-              <li className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-700 shadow-sm">
-                Admin updated the "UI/UX Foundations" course module.
-              </li>
-              <li className="rounded-lg border border-gray-200 bg-white p-4 text-sm text-gray-700 shadow-sm">
-                Report generated for April 2025.
-              </li>
-            </ul>
-          </section>
-        </main>
-      </div>
+        <div className="space-y-4 rounded-xl border border-gray-100 bg-white p-4">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-green-100">
+            <IoLibrary className="h-3.5 w-3.5 text-green-600" />
+          </div>
+          <div>
+            <p className="text-base font-bold md:text-lg">2 345</p>
+            <p className="md:text-sm">Total Courses</p>
+          </div>
+        </div>
 
-      <footer className="border-t border-gray-200 py-4 text-center text-sm text-gray-400">
-        © 2025 LMS Admin. Terms · Privacy Policy
-      </footer>
+        <div className="space-y-4 rounded-xl border border-gray-100 bg-white p-4">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-green-100">
+            <HiMiniUser className="h-3.5 w-3.5 text-green-600" />
+          </div>
+          <div>
+            <p className="text-base font-bold md:text-lg">2 345</p>
+            <p className="md:text-sm">Total Instructors</p>
+          </div>
+        </div>
+
+        <div className="space-y-4 rounded-xl border border-gray-100 bg-white p-4">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-green-100">
+            <HiOutlineStatusOnline className="h-3.5 w-3.5 text-green-600" />
+          </div>
+          <div>
+            <p className="text-base font-bold md:text-lg">2 345</p>
+            <p className="md:text-sm">Active Students</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_14rem]">
+        <div className="space-y-4 rounded-xl border border-gray-100 bg-white p-6">
+          <h3>Popular Courses</h3>
+
+          {popularCourses.map((course) => (
+            <div key={course.id} className="flex items-center gap-4">
+              <div className="flex flex-1 justify-between md:text-xs lg:text-sm">
+                <p className="font-semibold text-gray-500">{course.title}</p>
+                <p>{course.enrolled}</p>
+              </div>
+              <div className="h-1.5 flex-1 rounded-full bg-gray-200">
+                <div
+                  className={`h-1.5 rounded-full ${course.title === "Product Management" ? "bg-green-500" : course.title === "Product Design" ? "bg-amber-500" : "bg-blue-600"}`}
+                  style={{ width: course.progress }}
+                ></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="space-y-4 rounded-xl bg-white p-6 lg:row-span-2">
+          <h3>Quick Actions</h3>
+
+          <div className="grid grid-cols-2 grid-rows-2 gap-2 lg:grid-cols-1 lg:gap-4">
+            <button className="flex flex-col items-center gap-0.5 rounded-lg bg-green-200 p-2 px-4">
+              <HiUserAdd className="h-4 w-4 md:h-5 md:w-5" />
+              <p className="md:text-xs">Enroll Student</p>
+            </button>
+            {/* <button className="flex flex-col items-center gap-0.5 rounded-lg bg-green-200 p-2 px-4">
+              <HiUserAdd className="h-4 w-4 md:h-5 md:w-5" />
+              <p className="md:text-xs">Enroll Student</p>
+            </button> */}
+            <button className="flex flex-col items-center rounded-lg bg-lime-200 p-2 px-4">
+              <RiUpload2Fill className="h-4 w-4 md:h-5 md:w-5" />
+              <p className="md:text-xs">Upload Course</p>
+            </button>
+            <button className="flex flex-col items-center gap-0.5 rounded-lg bg-slate-200 p-2 px-4">
+              <RiTaskFill className="h-4 w-4 md:h-5 md:w-5" />
+              <p className="md:text-xs">Give Assignment</p>
+            </button>
+            <button className="flex flex-col items-center gap-0.5 rounded-lg bg-emerald-200 p-2 px-4">
+              <RiAwardFill className="h-4 w-4 md:h-5 md:w-5" />
+              <p className="md:text-xs">Issue Certificate</p>
+            </button>
+          </div>
+        </div>
+
+        <div className="w-full space-y-4 rounded-xl bg-white p-6">
+          <h3>Recent Enrollments</h3>
+
+          <div className="rounded-lg bg-lime-50 p-4">
+            <table className="w-full">
+              <thead className="table-auto text-left">
+                <tr className="border-b border-gray-300">
+                  <th>Student</th>
+                  <th>Course</th>
+                  <th>Enrolled</th>
+                </tr>
+              </thead>
+              <tbody className="">
+                <tr className="">
+                  <td className="">Samuel Durumba</td>
+                  <td>Product Marketing</td>
+                  <td>{Date.now()}</td>
+                </tr>
+                <tr>
+                  <td>Samuel</td>
+                  <td>Product Marketing</td>
+                  <td>{Date.now()}</td>
+                </tr>
+                <tr>
+                  <td>Samuel</td>
+                  <td>Product Marketing</td>
+                  <td>{Date.now()}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
+
+export default AdminDashboard;

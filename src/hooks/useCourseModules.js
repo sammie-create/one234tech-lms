@@ -10,7 +10,7 @@ function useCourseModules(courseId) {
         .select("*, lessons(*)")
         .eq("course_id", courseId)
         .order("order_index", { ascending: true })
-        .order("order_index", { ascending: true, foreignTable: "lessons" });
+        .order("order_index", { ascending: true, referencedTable: "lessons" });
 
       if (error) throw error;
 

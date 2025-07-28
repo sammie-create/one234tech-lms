@@ -6,6 +6,7 @@ import Loader from "../../ui/Loader";
 function StudentCourses() {
   const { user, authLoading } = useAuthContext();
   const { data: courses, isLoading, isError } = useCourses(user?.id);
+  console.log("Sammies Courses:", courses);
 
   if (authLoading || isLoading) return <Loader />;
   if (isError)
@@ -27,7 +28,7 @@ function StudentCourses() {
       <h2 className="mb-6">My Courses</h2>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-4">
         {courses.map((course) => (
-          <Link to={`${course.id}`} key={course.id}>
+          <Link to={`${course.course_id}`} key={course.course_id}>
             <div className="overflow-hidden rounded-lg bg-white shadow transition hover:shadow-lg">
               <img
                 src={course.cover_image}

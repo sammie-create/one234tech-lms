@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import Lottie from "lottie-react";
-import mailSentAnimation from "../../assets/animation/mail-sent.json";
+import mailSentAnimation from "@/assets/animation/mail-sent.json";
 
 function EmailSent() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-gray-100 text-center">
-      <div className="w-32 h-32 md:w-48 md:h-48 mb-4">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100 px-4 text-center">
+      <div className="mb-4 h-32 w-32 md:h-48 md:w-48">
         <Lottie
           animationData={mailSentAnimation}
           loop={true}
@@ -14,15 +14,15 @@ function EmailSent() {
         />
       </div>
 
-      <h2 className="text-lg font-semibold mb-2">Check your email</h2>
-      <p className="text-sm text-gray-600 mb-6">
+      <h2 className="mb-2 text-lg font-semibold">Check your email</h2>
+      <p className="mb-6 text-sm text-gray-600">
         We've sent a password reset link. Please follow the instructions in your
         inbox.
       </p>
 
       <Link
         to="/lms/signin"
-        className="text-sm !text-emerald-600 hover:underline font-medium"
+        className="text-sm font-medium !text-emerald-600 hover:underline"
       >
         Back to Sign In
       </Link>
