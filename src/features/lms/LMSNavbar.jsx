@@ -110,7 +110,12 @@ function LMSNavbar() {
         {dropdownOpen && (
           <div className="absolute right-0 z-50 mt-2 w-40 rounded border border-gray-200 bg-white shadow-lg">
             <Link
+<<<<<<< HEAD
               to="/settings"
+=======
+              to="settings"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+>>>>>>> one234tech-lms-second/main
               className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
               <FiSettings className="mr-2" /> Profile Settings

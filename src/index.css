@@ -90,7 +90,11 @@ h1 {
 }
 
 h2 {
+<<<<<<< HEAD
   @apply text-xl font-semibold text-gray-800 md:text-2xl xl:text-3xl;
+=======
+  @apply text-lg font-semibold text-gray-800 md:text-2xl xl:text-3xl;
+>>>>>>> one234tech-lms-second/main
 }
 
 h3 {

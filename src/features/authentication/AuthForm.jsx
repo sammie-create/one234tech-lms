@@ -26,7 +26,13 @@ function AuthForm({ title, subtitle, role, variant, onSubmit }) {
           </div>
         </Link>
         <h2 className="tracking-wide">One234 Tech</h2>
+<<<<<<< HEAD
         <h3 className="leading-3">{role} Portal</h3>
+=======
+        <h3 className="leading-3">
+          {role.at(0).toUpperCase() + role.slice(1)} Portal
+        </h3>
+>>>>>>> one234tech-lms-second/main
       </div>
 
       <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-md">

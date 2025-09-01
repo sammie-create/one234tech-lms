@@ -64,7 +64,18 @@ function StudentTable({ onViewStudent }) {
     [onViewStudent],
   );
 
+<<<<<<< HEAD
   return <Table columns={columns} data={students} isLoading={isLoading} />;
+=======
+  return (
+    <Table
+      columns={columns}
+      data={students}
+      maxHeight="400px"
+      isLoading={isLoading}
+    />
+  );
+>>>>>>> one234tech-lms-second/main
 }
 
 export default StudentTable;
