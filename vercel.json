@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/lms/:path*", "destination": "/" }]
+}
