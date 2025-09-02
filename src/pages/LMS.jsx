@@ -20,11 +20,8 @@ import LessonViewer from "@/features/lms/LessonViewer";
 import AdminDashboard from "@/features/lms/admin/AdminDashboard";
 import AdminIndex from "@/features/lms/admin/AdminIndex";
 import StudentManagementPage from "@/features/lms/admin/StudentManagement";
-<<<<<<< HEAD
-=======
 import CoursesManagement from "@/features/lms/admin/CoursesManagement";
 import ModulesManagement from "@/features/lms/admin/ModulesManagement";
->>>>>>> one234tech-lms-second/main
 
 function LMS() {
   return (
@@ -59,11 +56,8 @@ function LMS() {
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="manage-students" element={<StudentManagementPage />} />
-<<<<<<< HEAD
-=======
             <Route path="manage-courses" element={<CoursesManagement />} />
             <Route path="manage-modules" element={<ModulesManagement />} />
->>>>>>> one234tech-lms-second/main
           </Route>
         </Route>
       </Routes>
