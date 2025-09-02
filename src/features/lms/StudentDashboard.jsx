@@ -1,11 +1,11 @@
 import { RiInformationFill, RiAlertFill } from "react-icons/ri";
 import { GrTarget } from "react-icons/gr";
-import { useAuthContext } from "../../contexts/AuthContext";
-import { useUserProfile } from "../../hooks/useUserProfile";
-import { useStudentStats } from "../../hooks/useStudentStats";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { useUserProfile } from "@/hooks/useUserProfile";
+import { useStudentStats } from "@/hooks/useStudentStats";
 import StudentDashboardProgressCard from "./StudentDashboardProgressCard";
-import Button from "../../ui/Button";
-import Loader from "../../ui/Loader";
+import Button from "@/ui/Button";
+import Loader from "@/ui/Loader";
 import { Link } from "react-router-dom";
 
 function StudentDashboard() {

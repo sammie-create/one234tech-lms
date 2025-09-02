@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useCourseModules } from "../../hooks/useCourseModules";
-import { useLessonProgress } from "../../hooks/useLessonProgress";
+import { useCourseModules } from "@/hooks/useCourseModules";
+import { useLessonProgress } from "@/hooks/useLessonProgress";
 
 function CourseSidebar() {
   const { courseId, lessonId } = useParams();

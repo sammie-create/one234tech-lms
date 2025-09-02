@@ -1,7 +1,7 @@
-import { useAuthContext } from "../../contexts/AuthContext";
-import { useCourses } from "../../hooks/useCourses";
+import { useAuthContext } from "@/contexts/AuthContext";
+import { useCourses } from "@/hooks/useCourses";
 import { Link } from "react-router-dom";
-import Loader from "../../ui/Loader";
+import Loader from "@/ui/Loader";
 
 function StudentCourses() {
   const { user, authLoading } = useAuthContext();

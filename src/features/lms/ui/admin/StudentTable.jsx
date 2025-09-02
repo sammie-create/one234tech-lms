@@ -64,9 +64,6 @@ function StudentTable({ onViewStudent }) {
     [onViewStudent],
   );
 
-<<<<<<< HEAD
-  return <Table columns={columns} data={students} isLoading={isLoading} />;
-=======
   return (
     <Table
       columns={columns}
@@ -75,7 +72,6 @@ function StudentTable({ onViewStudent }) {
       isLoading={isLoading}
     />
   );
->>>>>>> one234tech-lms-second/main
 }
 
 export default StudentTable;
