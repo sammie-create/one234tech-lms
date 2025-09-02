@@ -8,11 +8,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-<<<<<<< HEAD
-function Table({ columns, data, isLoading }) {
-=======
 function Table({ columns, data, maxHeight, isLoading }) {
->>>>>>> one234tech-lms-second/main
   const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -48,17 +44,11 @@ function Table({ columns, data, maxHeight, isLoading }) {
           {table.getPageCount()}
         </div>
       </div>
-<<<<<<< HEAD
-      <div className="scrollbar-thin max-h-[400px] overflow-y-auto md:w-[434px] lg:w-[634px] xl:w-full">
-        <table className="min-w-full text-left text-sm">
-          <thead className="bg-gray-200 text-sm text-gray-500">
-=======
       <div
-        className={`scrollbar-thin max-h-${maxHeight} w-full overflow-y-auto`}
+        className={`scrollbar-thin max-h-${maxHeight} w-full overflow-y-auto md:w-[434px] lg:w-[634px] xl:w-full`}
       >
         <table className="min-w-full text-left text-sm">
           <thead className="bg-gray-200 text-xs text-gray-500">
->>>>>>> one234tech-lms-second/main
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
