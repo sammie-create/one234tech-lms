@@ -106,7 +106,7 @@ function ModulesManagement() {
   console.log(editingModule);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6">
       <h1 className="mb-6 text-2xl font-bold">Manage Modules</h1>
 
       {/* Course Selector */}
@@ -125,6 +125,7 @@ function ModulesManagement() {
           columns={columns}
           data={modules || []}
           isLoading={modulesLoading}
+          style={"mt-6"}
         />
       ) : // <table className="w-full border border-gray-200">
       //   <thead>

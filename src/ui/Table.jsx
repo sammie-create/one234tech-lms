@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-table";
 import { useState } from "react";
 
-function Table({ columns, data, maxHeight, isLoading }) {
+function Table({ columns, data, maxHeight, isLoading, style }) {
   const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -30,7 +30,9 @@ function Table({ columns, data, maxHeight, isLoading }) {
   if (isLoading) return <p>Loading...</p>;
 
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-gray-300">
+    <div
+      className={`w-full overflow-x-auto rounded-xl border border-gray-300 ${style}`}
+    >
       <div className="flex items-center justify-between bg-gray-200 px-2 py-2">
         <input
           type="text"
@@ -45,7 +47,7 @@ function Table({ columns, data, maxHeight, isLoading }) {
         </div>
       </div>
       <div
-        className={`scrollbar-thin max-h-${maxHeight} overflow-y-auto w-full`}
+        className={`scrollbar-thin max-h-${maxHeight} w-full overflow-y-auto`}
       >
         <table className="min-w-full text-left text-sm">
           <thead className="bg-gray-200 text-xs text-gray-500">

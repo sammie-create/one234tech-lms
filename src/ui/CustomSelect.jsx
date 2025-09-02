@@ -9,7 +9,7 @@ import clsx from "clsx";
 
 export default function CustomSelect({ label, options, selected, onChange }) {
   return (
-    <div className="mb-0 w-full">
+    <div className={`mb-0 w-full`}>
       <label className="mb-1 block font-medium md:text-xs">{label}</label>
       <Listbox value={selected} onChange={onChange}>
         <div className="relative">
