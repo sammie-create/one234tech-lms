@@ -8,11 +8,7 @@ function useAllCourses() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("courses")
-<<<<<<< HEAD
-        .select("id, title");
-=======
         .select("id, title, description, slug, total_modules, duration");
->>>>>>> one234tech-lms-second/main
 
       if (error) throw error;
       return data;
