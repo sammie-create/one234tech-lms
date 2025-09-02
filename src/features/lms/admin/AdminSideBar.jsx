@@ -32,21 +32,13 @@ const links = [
   },
   {
     id: 502,
-<<<<<<< HEAD
-    to: "courses",
-=======
     to: "manage-courses",
->>>>>>> one234tech-lms-second/main
     linkIcon: <RiBookShelfLine />,
     linkName: "Manage Courses",
   },
   {
     id: 503,
-<<<<<<< HEAD
-    to: "modules",
-=======
     to: "manage-modules",
->>>>>>> one234tech-lms-second/main
     linkIcon: <RiFolder3Line />,
     linkName: "Modules",
   },
