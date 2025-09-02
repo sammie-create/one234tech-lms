@@ -45,7 +45,7 @@ function Table({ columns, data, maxHeight, isLoading }) {
         </div>
       </div>
       <div
-        className={`scrollbar-thin max-h-${maxHeight} w-full overflow-y-auto md:w-[434px] lg:w-[634px] xl:w-full`}
+        className={`scrollbar-thin max-h-${maxHeight} overflow-y-auto md:w-[434px] lg:w-[634px] xl:w-full`}
       >
         <table className="min-w-full text-left text-sm">
           <thead className="bg-gray-200 text-xs text-gray-500">
