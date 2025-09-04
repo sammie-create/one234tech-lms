@@ -1,11 +1,5 @@
 import { NavLink } from "react-router-dom";
-import {
-  FiHome,
-  FiBook,
-  FiClipboard,
-  FiAward,
-  FiSettings,
-} from "react-icons/fi";
+
 import { useLMSContext } from "@/contexts/LMSContext";
 import {
   RiBook2Line,
@@ -44,7 +38,7 @@ const links = [
   },
   {
     id: 504,
-    to: "lessons",
+    to: "manage-lessons",
     linkIcon: <MdOutlinePlayLesson />,
     linkName: "Lessons",
   },

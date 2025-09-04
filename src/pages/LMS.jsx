@@ -22,6 +22,7 @@ import AdminIndex from "@/features/lms/admin/AdminIndex";
 import StudentManagementPage from "@/features/lms/admin/StudentManagement";
 import CoursesManagement from "@/features/lms/admin/CoursesManagement";
 import ModulesManagement from "@/features/lms/admin/ModulesManagement";
+import LessonManagement from "@/features/lms/admin/LessonManagement";
 
 function LMS() {
   return (
@@ -58,6 +59,7 @@ function LMS() {
             <Route path="manage-students" element={<StudentManagementPage />} />
             <Route path="manage-courses" element={<CoursesManagement />} />
             <Route path="manage-modules" element={<ModulesManagement />} />
+            <Route path="manage-lessons" element={<LessonManagement />} />
           </Route>
         </Route>
       </Routes>

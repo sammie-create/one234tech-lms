@@ -8,6 +8,9 @@ import CustomSelect from "../../../ui/CustomSelect";
 import AddEditModuleModal from "../ui/admin/AddEditModuleModal";
 import { BsThreeDots } from "react-icons/bs";
 import Table from "@/ui/Table";
+import DeleteConfirmModal from "./DeleteConfirmModal";
+import { supabase } from "@/integrations/supabaseClient";
+import { toast } from "react-hot-toast";
 
 function ModulesManagement() {
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -16,16 +19,18 @@ function ModulesManagement() {
   const [activeRowId, setActiveRowId] = useState(null); // controls which row's actions are open
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
-  const { data: courses, isLoading: coursesLoading } = useAllCourses();
+  const { data: courses } = useAllCourses();
 
   const courseOptions = courses?.map((course) => ({
     value: course.id,
     label: course.title,
   }));
 
-  const { data: modules, isLoading: modulesLoading } = useCourseModules(
-    selectedCourse?.value,
-  );
+  const {
+    data: modules,
+    isLoading: modulesLoading,
+    refetch,
+  } = useCourseModules(selectedCourse?.value);
 
   console.log(modules);
 
@@ -37,6 +42,22 @@ function ModulesManagement() {
   function handleEditModule(module) {
     setEditingModule(module);
     setShowModal(true);
+  }
+
+  async function handleDeleteModule(moduleId) {
+    try {
+      toast.loading("Deleting...");
+      const { error } = await supabase
+        .from("modules")
+        .delete()
+        .eq("id", moduleId);
+      toast.dismiss();
+      if (error) throw error;
+      toast.success("Module deleted");
+      refetch();
+    } catch (err) {
+      toast.error(err.message || "Error deleting course");
+    }
   }
 
   const columns = [
@@ -127,40 +148,7 @@ function ModulesManagement() {
           isLoading={modulesLoading}
           style={"mt-6"}
         />
-      ) : // <table className="w-full border border-gray-200">
-      //   <thead>
-      //     <tr className="bg-gray-100">
-      //       <th className="p-3 text-left">Order</th>
-      //       <th className="p-3 text-left">Title</th>
-      //       <th className="p-3 text-left">Description</th>
-      //       <th className="p-3 text-left">Actions</th>
-      //     </tr>
-      //   </thead>
-      //   <tbody>
-      //     {modules.map((module) => (
-      //       <tr key={module.id} className="border-t">
-      //         <td className="p-3">{module.order_index}</td>
-      //         <td className="p-3">{module.title}</td>
-      //         <td className="p-3">{module.description}</td>
-      //         <td className="space-x-2 p-3">
-      //           <button
-      //             className="rounded bg-blue-600 px-3 py-1 text-white"
-      //             onClick={() => handleEditModule(module)}
-      //           >
-      //             Edit
-      //           </button>
-      //           <button
-      //             className="rounded bg-red-600 px-3 py-1 text-white"
-      //             onClick={() => toast.error("Delete not implemented yet")}
-      //           >
-      //             Delete
-      //           </button>
-      //         </td>
-      //       </tr>
-      //     ))}
-      //   </tbody>
-      // </table>
-      selectedCourse ? (
+      ) : selectedCourse ? (
         <p className="mt-1 text-[10px] text-gray-400 italic">
           No modules found for this course.
         </p>
@@ -188,6 +176,18 @@ function ModulesManagement() {
           courseId={selectedCourse.value}
           module={editingModule}
           onClose={() => setShowModal(false)}
+        />
+      )}
+
+      {deleteModalOpen && editingModule && (
+        <DeleteConfirmModal
+          title="Delete Module"
+          message={`Are you sure you want to delete "${editingModule.title}"? This action cannot be undone.`}
+          onConfirm={() => {
+            handleDeleteModule(editingModule.id);
+            setDeleteModalOpen(false);
+          }}
+          onCancel={() => setDeleteModalOpen(false)}
         />
       )}
     </div>

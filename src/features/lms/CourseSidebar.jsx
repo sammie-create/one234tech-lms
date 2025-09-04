@@ -12,13 +12,13 @@ function CourseSidebar() {
 
   const {
     allLessons,
-    isCompleted,
-    completionLoading,
-    progress,
-    progressLoading,
-    currentLesson,
-    nextLesson,
-    prevLesson,
+    // isCompleted,
+    // completionLoading,
+    // progress,
+    // progressLoading,
+    // currentLesson,
+    // nextLesson,
+    // prevLesson,
   } = useLessonProgress({ lessonId, courseId, modules });
 
   useEffect(() => {
